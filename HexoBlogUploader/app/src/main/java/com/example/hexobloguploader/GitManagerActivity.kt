@@ -72,6 +72,14 @@ class GitManagerActivity : AppCompatActivity() {
         binding.buttonCloneMyBlog.setOnClickListener {
             cloneMyBlogRepository()
         }
+        
+        binding.buttonSetupActions.setOnClickListener {
+            setupGitHubActions()
+        }
+        
+        binding.buttonCheckActions.setOnClickListener {
+            checkGitHubActionsStatus()
+        }
     }
     
     private fun checkRepositoryStatus() {
@@ -469,6 +477,95 @@ class GitManagerActivity : AppCompatActivity() {
             
             状态: ${if (gitManager.isRepositoryInitialized()) "✅ 已初始化" else "❌ 未初始化"}
         """.trimIndent()
+    }
+    
+    /**
+     * 设置 GitHub Actions 自动部署
+     */
+    private fun setupGitHubActions() {
+        appendLog("⚙️ 开始配置 GitHub Actions...")
+        
+        if (!gitManager.isRepositoryInitialized()) {
+            appendLog("❌ 请先克隆博客仓库")
+            Toast.makeText(this, "请先克隆博客仓库", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        // 在后台执行配置生成
+        CoroutineScope(Dispatchers.IO).launch {
+            val configGenerator = com.example.hexobloguploader.config.GitHubActionsConfigGenerator(this@GitManagerActivity)
+            val result = configGenerator.generateConfigFiles(
+                blogTitle = "我的 Hexo 博客",
+                authorName = "Hexo 博客作者",
+                githubUsername = "your-username",
+                repoName = "your-username.github.io"
+            )
+            
+            withContext(Dispatchers.Main) {
+                if (result.success) {
+                    appendLog("✅ ${result.message}")
+                    appendLog("   工作流文件: ${result.workflowPath}")
+                    appendLog("   package.json: ${result.packageJsonPath}")
+                    appendLog("   _config.yml: ${result.configYmlPath}")
+                    
+                    // 显示配置说明
+                    appendLog("📋 GitHub Actions 配置说明:")
+                    appendLog("   1. 工作流文件已创建: .github/workflows/deploy.yml")
+                    appendLog("   2. Hexo 配置文件已创建: _config.yml")
+                    appendLog("   3. Node.js 依赖文件已创建: package.json")
+                    appendLog("   4. 必要的目录结构已创建")
+                    
+                    appendLog("🚀 下一步:")
+                    appendLog("   1. 提交并推送这些配置文件到 GitHub")
+                    appendLog("   2. 在 GitHub 仓库的 Settings → Pages 中启用 GitHub Pages")
+                    appendLog("   3. 推送文章到 source 分支")
+                    appendLog("   4. GitHub Actions 会自动构建并部署到 gh-pages 分支")
+                    
+                    Toast.makeText(this@GitManagerActivity, "GitHub Actions 配置成功", Toast.LENGTH_SHORT).show()
+                    
+                    // 检查配置状态
+                    checkGitHubActionsStatus()
+                    
+                } else {
+                    appendLog("❌ ${result.message}")
+                    appendLog("   错误: ${result.error}")
+                    
+                    Toast.makeText(this@GitManagerActivity, "GitHub Actions 配置失败: ${result.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
+    }
+    
+    /**
+     * 检查 GitHub Actions 配置状态
+     */
+    private fun checkGitHubActionsStatus() {
+        appendLog("🔍 检查 GitHub Actions 配置状态...")
+        
+        if (!gitManager.isRepositoryInitialized()) {
+            appendLog("❌ 仓库未初始化")
+            return
+        }
+        
+        val configGenerator = com.example.hexobloguploader.config.GitHubActionsConfigGenerator(this)
+        val status = configGenerator.getConfigStatus()
+        
+        appendLog(status.getFormattedStatus())
+        
+        if (status.isFullyConfigured) {
+            appendLog("🎉 GitHub Actions 已完全配置！")
+            appendLog("📝 使用方法:")
+            appendLog("   1. 编写文章并保存")
+            appendLog("   2. 提交并推送到 source 分支")
+            appendLog("   3. GitHub Actions 会自动构建并部署")
+            appendLog("   4. 访问 https://your-username.github.io 查看博客")
+        } else {
+            appendLog("⚠️ GitHub Actions 配置不完整")
+            appendLog("💡 建议:")
+            appendLog("   1. 点击 '设置 GitHub Actions' 按钮生成配置文件")
+            appendLog("   2. 或者手动创建缺失的文件")
+            appendLog("   3. 确保所有配置文件都存在")
+        }
     }
     
     private fun appendLog(message: String) {

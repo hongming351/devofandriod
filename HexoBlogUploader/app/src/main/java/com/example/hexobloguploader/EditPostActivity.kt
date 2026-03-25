@@ -3,6 +3,7 @@ package com.example.hexobloguploader
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hexobloguploader.databinding.ActivityEditPostBinding
@@ -224,6 +225,11 @@ categories: []
             if (success) {
                 Toast.makeText(this, "文章保存成功", Toast.LENGTH_SHORT).show()
                 
+                // 检查是否自动提交到 Git
+                if (shouldAutoCommit()) {
+                    autoCommitToGit(post.title)
+                }
+                
                 // 返回结果
                 setResult(RESULT_OK)
                 finish()
@@ -231,6 +237,57 @@ categories: []
                 Toast.makeText(this, "文章保存失败", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+    
+    /**
+     * 自动提交到 Git
+     */
+    private fun autoCommitToGit(postTitle: String) {
+        // 这里应该从设置中获取 Token
+        val gitToken = getGitToken()
+        
+        if (gitToken.isNotEmpty() && gitToken.startsWith("ghp_")) {
+            // 在后台执行 Git 提交
+            kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
+                val gitManager = com.example.hexobloguploader.git.GitOperationsManager(this@EditPostActivity)
+                
+                // 生成提交信息
+                val commitMessage = if (isNewPost) {
+                    "新增文章: $postTitle"
+                } else {
+                    "更新文章: $postTitle"
+                }
+                
+                val result = gitManager.commitAndPush(commitMessage, gitToken, true)
+                
+                kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
+                    if (result.success) {
+                        Toast.makeText(this@EditPostActivity, "文章已自动提交到 Git", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 提交失败，但不影响文章保存
+                        Log.w("EditPostActivity", "Git 提交失败: ${result.message}")
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * 检查是否应该自动提交
+     */
+    private fun shouldAutoCommit(): Boolean {
+        // 这里应该从设置中读取用户偏好
+        // 暂时返回 true 进行测试
+        return true
+    }
+    
+    /**
+     * 获取 Git Token
+     */
+    private fun getGitToken(): String {
+        // 这里应该从安全存储中获取 Token
+        // 暂时返回空字符串
+        return ""
     }
     
     private fun deletePost() {

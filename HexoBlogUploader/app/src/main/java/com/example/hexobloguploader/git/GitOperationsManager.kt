@@ -191,18 +191,45 @@ class GitOperationsManager(private val context: Context) {
      * 提交更改
      * @param message 提交信息
      * @param token GitHub Token（用于推送）
+     * @param autoPull 是否在推送前自动拉取更新（避免冲突）
      * @return 提交结果
      */
     fun commitAndPush(
         message: String,
-        token: String
+        token: String,
+        autoPull: Boolean = true
     ): GitResult {
         return try {
             val localPath = storageManager.blogRootDir
             val git = openRepository(localPath) ?: return GitResult.error("仓库未初始化")
             
-            // 添加所有更改
-            git.add().addFilepattern(".").call()
+            // 检查状态
+            val status = git.status().call()
+            
+            if (!status.hasUncommittedChanges()) {
+                git.close()
+                return GitResult.error("没有需要提交的更改")
+            }
+            
+            Log.d(TAG, "检测到更改文件:")
+            Log.d(TAG, "  新增: ${status.added.size}")
+            Log.d(TAG, "  修改: ${status.modified.size}")
+            Log.d(TAG, "  删除: ${status.missing.size}")
+            Log.d(TAG, "  未跟踪: ${status.untracked.size}")
+            
+            // 添加所有更改（包括删除的文件）
+            // 使用 setUpdate(true) 来检测删除的文件
+            git.add()
+                .setUpdate(true)  // 检测删除的文件
+                .addFilepattern(".")
+                .call()
+            
+            // 添加未跟踪的文件
+            if (status.untracked.isNotEmpty()) {
+                git.add()
+                    .addFilepattern(".")
+                    .call()
+            }
             
             // 提交
             val commit = git.commit()
@@ -210,6 +237,19 @@ class GitOperationsManager(private val context: Context) {
                 .call()
             
             Log.d(TAG, "提交成功: ${commit.id.name}")
+            
+            // 如果需要，先拉取更新
+            if (autoPull) {
+                try {
+                    Log.d(TAG, "推送前拉取更新...")
+                    git.pull()
+                        .setCredentialsProvider(UsernamePasswordCredentialsProvider(token, ""))
+                        .call()
+                    Log.d(TAG, "拉取更新成功")
+                } catch (e: Exception) {
+                    Log.w(TAG, "拉取更新失败，继续推送: ${e.message}")
+                }
+            }
             
             // 推送到远程
             git.push()
@@ -230,6 +270,66 @@ class GitOperationsManager(private val context: Context) {
             Log.e(TAG, "未知异常: ${e.message}", e)
             GitResult.error("提交失败: ${e.message}")
         }
+    }
+    
+    /**
+     * 智能提交（自动生成提交信息）
+     * @param token GitHub Token
+     * @return 提交结果
+     */
+    fun smartCommitAndPush(token: String): GitResult {
+        val status = checkRepositoryStatus()
+        
+        if (!status.hasChanges) {
+            return GitResult.error("没有需要提交的更改")
+        }
+        
+        // 生成智能提交信息
+        val commitMessage = generateCommitMessage(status)
+        
+        return commitAndPush(commitMessage, token, true)
+    }
+    
+    /**
+     * 生成智能提交信息
+     */
+    private fun generateCommitMessage(status: GitStatus): String {
+        val changeCount = status.getChangeCount()
+        val date = java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
+            .format(java.util.Date())
+        
+        val message = StringBuilder("更新博客文章 - $date\n\n")
+        
+        if (status.added.isNotEmpty()) {
+            message.append("新增: ${status.added.size} 篇文章\n")
+        }
+        if (status.modified.isNotEmpty()) {
+            message.append("修改: ${status.modified.size} 篇文章\n")
+        }
+        if (status.missing.isNotEmpty()) {
+            message.append("删除: ${status.missing.size} 篇文章\n")
+        }
+        if (status.untracked.isNotEmpty()) {
+            message.append("新增文件: ${status.untracked.size} 个\n")
+        }
+        
+        // 添加前几个文件作为示例
+        val sampleFiles = mutableListOf<String>()
+        sampleFiles.addAll(status.added.take(3))
+        sampleFiles.addAll(status.modified.take(3))
+        sampleFiles.addAll(status.missing.take(3))
+        
+        if (sampleFiles.isNotEmpty()) {
+            message.append("\n涉及文件:\n")
+            sampleFiles.take(5).forEach { file ->
+                message.append("  - $file\n")
+            }
+            if (sampleFiles.size > 5) {
+                message.append("  - ...等 ${sampleFiles.size - 5} 个文件\n")
+            }
+        }
+        
+        return message.toString()
     }
     
     /**
