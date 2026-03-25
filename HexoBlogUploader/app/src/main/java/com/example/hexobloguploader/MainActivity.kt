@@ -10,20 +10,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var blogAdapter: BlogAdapter
     private lateinit var storageManager: BlogStorageManager
+    
+    companion object {
+        private const val REQUEST_EDIT_POST = 1001
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
-        // 初始化存储管理器
+
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = "Hexo 博客上传器"
+
         storageManager = BlogStorageManager(this)
-        
-        setupToolbar()
+
         setupRecyclerView()
         setupFab()
-        initStorage()
-        loadBlogsFromStorage()
+        setupMenu()
+        loadBlogs()
     }
     
     private fun setupToolbar() {
@@ -46,8 +51,59 @@ class MainActivity : AppCompatActivity() {
     
     private fun setupFab() {
         binding.fabAddBlog.setOnClickListener {
-            // 添加新博客
-            createNewBlog()
+            // 打开 Markdown 编辑器创建新文章
+            val intent = android.content.Intent(this, EditPostActivity::class.java)
+            startActivityForResult(intent, REQUEST_EDIT_POST)
+        }
+    }
+    
+    private fun setupMenu() {
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_git_manager -> {
+                    // 打开 Git 管理界面
+                    val intent = android.content.Intent(this, GitManagerActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                R.id.menu_refresh -> {
+                    // 刷新文章列表
+                    loadBlogs()
+                    true
+                }
+                R.id.menu_settings -> {
+                    // 打开设置界面（待实现）
+                    showToast("设置功能待实现")
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+    
+    override fun onCreateOptionsMenu(menu: android.view.Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+    
+    private fun loadBlogs() {
+        // 初始化存储
+        if (!storageManager.initStorage()) {
+            showToast("存储初始化失败，请检查权限")
+            return
+        }
+        
+        // 加载博客文章
+        loadBlogsFromStorage()
+    }
+    
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        
+        if (requestCode == REQUEST_EDIT_POST && resultCode == RESULT_OK) {
+            // 文章编辑/创建成功，刷新列表
+            loadBlogs()
+            showToast("文章保存成功")
         }
     }
     
