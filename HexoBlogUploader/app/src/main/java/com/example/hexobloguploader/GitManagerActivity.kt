@@ -126,11 +126,23 @@ class GitManagerActivity : AppCompatActivity() {
         appendLog("   仓库: $repoUrl")
         appendLog("   分支: ${GitOperationsManager.DEFAULT_BRANCH}")
         
+        // 显示进度对话框
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setTitle("克隆仓库")
+            setMessage("正在克隆仓库，请稍候...")
+            setCancelable(false)
+            setProgressStyle(android.app.ProgressDialog.STYLE_HORIZONTAL)
+            max = 100
+            show()
+        }
+        
         // 创建进度监视器
         val progressMonitor = SimpleProgressMonitor { message, percent ->
             runOnUiThread {
                 binding.textProgress.text = message
                 binding.progressBar.progress = percent
+                progressDialog.progress = percent
+                progressDialog.setMessage(message)
             }
         }
         
@@ -139,6 +151,8 @@ class GitManagerActivity : AppCompatActivity() {
             val result = gitManager.cloneRepository(repoUrl, token, progressMonitor)
             
             withContext(Dispatchers.Main) {
+                progressDialog.dismiss()
+                
                 if (result.success) {
                     appendLog("✅ ${result.message}")
                     appendLog("   路径: ${result.details}")
@@ -150,7 +164,9 @@ class GitManagerActivity : AppCompatActivity() {
                     updateRepositoryInfo()
                     checkRepositoryStatus()
                     
-                    Toast.makeText(this@GitManagerActivity, "仓库克隆成功", Toast.LENGTH_SHORT).show()
+                    // 显示成功 Snackbar
+                    showSnackbar("仓库克隆成功", android.graphics.Color.GREEN)
+                    
                 } else {
                     appendLog("❌ ${result.message}")
                     appendLog("   错误: ${result.details}")
@@ -158,7 +174,8 @@ class GitManagerActivity : AppCompatActivity() {
                     binding.textProgress.text = "克隆失败"
                     binding.progressBar.progress = 0
                     
-                    Toast.makeText(this@GitManagerActivity, "仓库克隆失败: ${result.message}", Toast.LENGTH_LONG).show()
+                    // 显示错误 Snackbar
+                    showSnackbar("仓库克隆失败: ${result.message}", android.graphics.Color.RED)
                 }
             }
         }
@@ -167,11 +184,23 @@ class GitManagerActivity : AppCompatActivity() {
     private fun pullUpdates() {
         appendLog("⬇️ 开始拉取更新...")
         
+        // 显示进度对话框
+        val progressDialog = android.app.ProgressDialog(this).apply {
+            setTitle("拉取更新")
+            setMessage("正在拉取最新更新，请稍候...")
+            setCancelable(false)
+            setProgressStyle(android.app.ProgressDialog.STYLE_HORIZONTAL)
+            max = 100
+            show()
+        }
+        
         // 创建进度监视器
         val progressMonitor = SimpleProgressMonitor { message, percent ->
             runOnUiThread {
                 binding.textProgress.text = message
                 binding.progressBar.progress = percent
+                progressDialog.progress = percent
+                progressDialog.setMessage(message)
             }
         }
         
@@ -180,6 +209,8 @@ class GitManagerActivity : AppCompatActivity() {
             val result = gitManager.pullUpdates(testToken, progressMonitor)
             
             withContext(Dispatchers.Main) {
+                progressDialog.dismiss()
+                
                 if (result.success) {
                     appendLog("✅ ${result.message}")
                     
@@ -190,7 +221,8 @@ class GitManagerActivity : AppCompatActivity() {
                     updateRepositoryInfo()
                     checkRepositoryStatus()
                     
-                    Toast.makeText(this@GitManagerActivity, "更新拉取成功", Toast.LENGTH_SHORT).show()
+                    // 显示成功 Snackbar
+                    showSnackbar("更新拉取成功", android.graphics.Color.GREEN)
                 } else {
                     appendLog("❌ ${result.message}")
                     appendLog("   错误: ${result.details}")
@@ -198,7 +230,8 @@ class GitManagerActivity : AppCompatActivity() {
                     binding.textProgress.text = "拉取失败"
                     binding.progressBar.progress = 0
                     
-                    Toast.makeText(this@GitManagerActivity, "更新拉取失败: ${result.message}", Toast.LENGTH_LONG).show()
+                    // 显示错误 Snackbar
+                    showSnackbar("更新拉取失败: ${result.message}", android.graphics.Color.RED)
                 }
             }
         }
@@ -577,5 +610,29 @@ class GitManagerActivity : AppCompatActivity() {
         binding.scrollView.post {
             binding.scrollView.fullScroll(android.view.View.FOCUS_DOWN)
         }
+    }
+    
+    /**
+     * 显示 Snackbar 通知
+     */
+    private fun showSnackbar(message: String, color: Int) {
+        val snackbar = com.google.android.material.snackbar.Snackbar.make(
+            binding.root,
+            message,
+            com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+        )
+        
+        // 设置背景颜色
+        snackbar.view.setBackgroundColor(color)
+        
+        // 设置文字颜色
+        snackbar.setTextColor(android.graphics.Color.WHITE)
+        
+        // 添加关闭按钮
+        snackbar.setAction("关闭") {
+            snackbar.dismiss()
+        }
+        
+        snackbar.show()
     }
 }
