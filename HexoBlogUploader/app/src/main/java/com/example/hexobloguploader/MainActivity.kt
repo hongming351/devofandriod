@@ -2,26 +2,166 @@ package com.example.hexobloguploader
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hexobloguploader.databinding.ActivityMainBinding
+import com.example.hexobloguploader.storage.BlogStorageManager
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var blogAdapter: BlogAdapter
+    private lateinit var storageManager: BlogStorageManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         
-        // 这里将添加应用的主要逻辑
-        setupUI()
+        // 初始化存储管理器
+        storageManager = BlogStorageManager(this)
+        
+        setupToolbar()
+        setupRecyclerView()
+        setupFab()
+        initStorage()
+        loadBlogsFromStorage()
     }
     
-    private fun setupUI() {
-        // 初始化界面组件
-        binding.textView.text = "Hexo 博客上传器"
-        binding.button.setOnClickListener {
-            // 这里将添加博客上传逻辑
-            binding.textView.text = "开始上传博客..."
+    private fun setupToolbar() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.title = "Hexo 博客管理"
+    }
+    
+    private fun setupRecyclerView() {
+        blogAdapter = BlogAdapter { blog ->
+            // 点击博客项的处理
+            showBlogDetail(blog)
+        }
+        
+        binding.recyclerViewBlogs.apply {
+            layoutManager = LinearLayoutManager(this@MainActivity)
+            adapter = blogAdapter
+            setHasFixedSize(true)
         }
     }
+    
+    private fun setupFab() {
+        binding.fabAddBlog.setOnClickListener {
+            // 添加新博客
+            createNewBlog()
+        }
+    }
+    
+    private fun initStorage() {
+        val success = storageManager.initStorage()
+        if (success) {
+            showToast("存储初始化成功")
+            
+            // 显示存储信息
+            val storageInfo = storageManager.getStorageInfo()
+            binding.toolbar.subtitle = "文章: ${storageInfo.postCount} | 大小: ${storageInfo.getFormattedSize()}"
+        } else {
+            showToast("存储初始化失败，请检查权限")
+        }
+    }
+    
+    private fun loadBlogsFromStorage() {
+        val posts = storageManager.getAllPosts()
+        
+        if (posts.isNotEmpty()) {
+            // 从存储加载真实数据
+            val blogs = posts.map { it.toBlog() }
+            blogAdapter.submitList(blogs)
+            updateEmptyState(false)
+            
+            // 更新存储信息
+            val storageInfo = storageManager.getStorageInfo()
+            binding.toolbar.subtitle = "文章: ${storageInfo.postCount} | 大小: ${storageInfo.getFormattedSize()}"
+        } else {
+            // 如果没有文章，加载示例数据
+            loadSampleBlogs()
+        }
+    }
+    
+    private fun loadSampleBlogs() {
+        val sampleBlogs = listOf(
+            Blog(
+                id = "1",
+                title = "欢迎使用 Hexo 博客上传器",
+                content = "这是你的第一篇博客文章，点击编辑开始写作吧！",
+                date = "2025-03-25",
+                tags = listOf("欢迎", "指南"),
+                filePath = "/sample/blog1.md"
+            ),
+            Blog(
+                id = "2", 
+                title = "Android 开发入门",
+                content = "学习如何使用 Kotlin 开发 Android 应用",
+                date = "2025-03-24",
+                tags = listOf("Android", "Kotlin", "教程"),
+                filePath = "/sample/blog2.md"
+            ),
+            Blog(
+                id = "3",
+                title = "Markdown 写作技巧",
+                content = "掌握 Markdown 语法，提升写作效率",
+                date = "2025-03-23",
+                tags = listOf("Markdown", "写作", "技巧"),
+                filePath = "/sample/blog3.md"
+            )
+        )
+        
+        blogAdapter.submitList(sampleBlogs)
+        updateEmptyState(false)
+        
+        // 显示存储路径信息
+        val storageInfo = storageManager.getStorageInfo()
+        binding.toolbar.subtitle = "存储路径: ${storageInfo.blogRootPath}"
+    }
+    
+    private fun showBlogDetail(blog: Blog) {
+        val intent = android.content.Intent(this, BlogDetailActivity::class.java).apply {
+            putExtra("BLOG_DATA", blog)
+        }
+        startActivity(intent)
+    }
+    
+    private fun createNewBlog() {
+        // 后续将实现创建新博客页面
+        showToast("创建新博客")
+        
+        // 暂时创建一个示例博客并保存
+        val newPost = com.example.hexobloguploader.model.Post.createNew(
+            title = "新博客文章",
+            content = "# 新博客文章\n\n这是你的新博客文章，开始编辑吧！",
+            categories = listOf("未分类"),
+            tags = listOf("新文章")
+        )
+        
+        val success = storageManager.savePost(newPost)
+        if (success) {
+            showToast("博客创建成功")
+            loadBlogsFromStorage() // 重新加载列表
+        } else {
+            showToast("博客创建失败")
+        }
+    }
+    
+    private fun updateEmptyState(isEmpty: Boolean) {
+        binding.textEmptyState.visibility = if (isEmpty) android.view.View.VISIBLE else android.view.View.GONE
+        binding.recyclerViewBlogs.visibility = if (isEmpty) android.view.View.GONE else android.view.View.VISIBLE
+    }
+    
+    private fun showToast(message: String) {
+        android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
+    }
 }
+
+// 博客数据类（简化版，用于列表显示）
+data class Blog(
+    val id: String,
+    val title: String,
+    val content: String,
+    val date: String,
+    val tags: List<String>,
+    val filePath: String
+)
