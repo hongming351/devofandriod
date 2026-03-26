@@ -2,14 +2,17 @@ package com.example.hexobloguploader
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.hexobloguploader.databinding.ActivityMainBinding
 import com.example.hexobloguploader.storage.BlogStorageManager
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: com.example.hexobloguploader.databinding.ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
     private lateinit var blogAdapter: BlogAdapter
     private lateinit var storageManager: BlogStorageManager
     
@@ -34,7 +37,7 @@ class MainActivity : AppCompatActivity() {
         try {
             Log.d(TAG, "MainActivity onCreate started")
             
-            binding = com.example.hexobloguploader.databinding.ActivityMainBinding.inflate(layoutInflater)
+            binding = ActivityMainBinding.inflate(layoutInflater)
             setContentView(binding.root)
 
             // 设置Toolbar作为ActionBar
@@ -65,11 +68,9 @@ class MainActivity : AppCompatActivity() {
             showBlogDetail(blog)
         }
         
-        binding.recyclerViewBlogs.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity)
-            adapter = blogAdapter
-            setHasFixedSize(true)
-        }
+        binding.recyclerViewBlogs.layoutManager = LinearLayoutManager(this)
+        binding.recyclerViewBlogs.adapter = blogAdapter
+        binding.recyclerViewBlogs.setHasFixedSize(true)
     }
     
     private fun setupFab() {
@@ -129,7 +130,8 @@ class MainActivity : AppCompatActivity() {
             
             // 显示存储信息
             val storageInfo = storageManager.getStorageInfo()
-            binding.toolbar.subtitle = "文章: ${storageInfo.postCount} | 大小: ${storageInfo.getFormattedSize()}"
+            // 使用setSubtitle方法而不是直接赋值
+            binding.toolbar.setSubtitle("文章: ${storageInfo.postCount} | 大小: ${storageInfo.getFormattedSize()}")
         } else {
             showToast("存储初始化失败，请检查权限")
         }
@@ -146,7 +148,7 @@ class MainActivity : AppCompatActivity() {
             
             // 更新存储信息
             val storageInfo = storageManager.getStorageInfo()
-            binding.toolbar.subtitle = "文章: ${storageInfo.postCount} | 大小: ${storageInfo.getFormattedSize()}"
+            binding.toolbar.setSubtitle("文章: ${storageInfo.postCount} | 大小: ${storageInfo.getFormattedSize()}")
         } else {
             // 如果没有文章，加载示例数据
             loadSampleBlogs()
@@ -186,7 +188,7 @@ class MainActivity : AppCompatActivity() {
         
         // 显示存储路径信息
         val storageInfo = storageManager.getStorageInfo()
-        binding.toolbar.subtitle = "存储路径: ${storageInfo.blogRootPath}"
+        binding.toolbar.setSubtitle("存储路径: ${storageInfo.blogRootPath}")
     }
     
     private fun showBlogDetail(blog: Blog) {
@@ -227,8 +229,8 @@ class MainActivity : AppCompatActivity() {
     }
     
     private fun updateEmptyState(isEmpty: Boolean) {
-        binding.textEmptyState.visibility = if (isEmpty) android.view.View.VISIBLE else android.view.View.GONE
-        binding.recyclerViewBlogs.visibility = if (isEmpty) android.view.View.GONE else android.view.View.VISIBLE
+        binding.textEmptyState.visibility = if (isEmpty) View.VISIBLE else View.GONE
+        binding.recyclerViewBlogs.visibility = if (isEmpty) View.GONE else View.VISIBLE
     }
     
     private fun showToast(message: String) {

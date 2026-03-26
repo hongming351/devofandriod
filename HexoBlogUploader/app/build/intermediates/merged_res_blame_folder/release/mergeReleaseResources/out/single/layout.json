@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "com.example.hexobloguploader.app-mergeReleaseResources-52:/layout/activity_blog_detail.xml",
+        "source": "com.example.hexobloguploader.app-main-54:/layout/activity_blog_detail.xml"
+    },
+    {
+        "merged": "com.example.hexobloguploader.app-mergeReleaseResources-52:/layout/item_blog.xml",
+        "source": "com.example.hexobloguploader.app-main-54:/layout/item_blog.xml"
+    },
+    {
+        "merged": "com.example.hexobloguploader.app-mergeReleaseResources-52:/layout/activity_test_storage.xml",
+        "source": "com.example.hexobloguploader.app-main-54:/layout/activity_test_storage.xml"
+    },
+    {
+        "merged": "com.example.hexobloguploader.app-mergeReleaseResources-52:/layout/activity_edit_post.xml",
+        "source": "com.example.hexobloguploader.app-main-54:/layout/activity_edit_post.xml"
+    },
+    {
+        "merged": "com.example.hexobloguploader.app-mergeReleaseResources-52:/layout/activity_main.xml",
+        "source": "com.example.hexobloguploader.app-main-54:/layout/activity_main.xml"
+    },
+    {
+        "merged": "com.example.hexobloguploader.app-mergeReleaseResources-52:/layout/activity_settings.xml",
+        "source": "com.example.hexobloguploader.app-main-54:/layout/activity_settings.xml"
+    },
+    {
+        "merged": "com.example.hexobloguploader.app-mergeReleaseResources-52:/layout/activity_git_manager.xml",
+        "source": "com.example.hexobloguploader.app-main-54:/layout/activity_git_manager.xml"
+    }
+]

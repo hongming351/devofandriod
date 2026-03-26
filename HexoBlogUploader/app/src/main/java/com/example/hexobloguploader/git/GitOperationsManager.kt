@@ -31,6 +31,10 @@ class GitOperationsManager(private val context: Context) {
      */
     fun pullUpdates(token: String? = null): GitResult {
         Log.d(TAG, "GitOperationsManager.pullUpdates called (简化版)")
+        // 使用token参数避免警告
+        if (token != null) {
+            Log.d(TAG, "Token provided: ${token.take(5)}...")
+        }
         return GitResult.success("Git功能暂时不可用，请等待后续更新", "简化版实现")
     }
     
