@@ -1404,6 +1404,7 @@ color accent_material_dark
 color accent_material_light
 color androidx_core_ripple_material_light
 color androidx_core_secondary_text_default_material_light
+color background
 color background_floating_material_dark
 color background_floating_material_light
 color background_material_dark
@@ -2128,6 +2129,7 @@ color mtrl_textinput_focused_box_stroke_color
 color mtrl_textinput_hovered_box_stroke_color
 color notification_action_color_filter
 color notification_icon_bg_color
+color primary
 color primary_dark_material_dark
 color primary_dark_material_light
 color primary_material_dark
@@ -2141,6 +2143,7 @@ color purple_500
 color purple_700
 color ripple_material_dark
 color ripple_material_light
+color secondary
 color secondary_text_default_material_dark
 color secondary_text_default_material_light
 color secondary_text_disabled_material_dark
@@ -2155,6 +2158,8 @@ color teal_200
 color teal_700
 color textColorPrimary
 color textColorSecondary
+color text_primary
+color text_secondary
 color tooltip_background_dark
 color tooltip_background_light
 color white
@@ -3246,8 +3251,10 @@ id bounce
 id bounceBoth
 id bounceEnd
 id bounceStart
+id buttonAbout
 id buttonBack
 id buttonCheckStatus
+id buttonCheckUpdates
 id buttonClearTestData
 id buttonCloneMyBlog
 id buttonCloneRepo
@@ -3255,6 +3262,7 @@ id buttonCommitPush
 id buttonCreateTestPost
 id buttonDelete
 id buttonEdit
+id buttonFeedback
 id buttonInitStorage
 id buttonListPosts
 id buttonPanel
@@ -3262,6 +3270,9 @@ id buttonPreview
 id buttonPullUpdates
 id buttonResetChanges
 id buttonSave
+id buttonSaveBlog
+id buttonSaveGithub
+id buttonSaveStorage
 id buttonTestClone
 id buttonUpload
 id cache_measures
@@ -3342,6 +3353,12 @@ id easeInOut
 id easeOut
 id east
 id edge
+id editAuthorName
+id editBlogTitle
+id editGithubToken
+id editGithubUsername
+id editRepoUrl
+id editStoragePath
 id editTextCategories
 id editTextContent
 id editTextTags
@@ -3839,6 +3856,7 @@ layout activity_blog_detail
 layout activity_edit_post
 layout activity_git_manager
 layout activity_main
+layout activity_settings
 layout activity_test_storage
 layout custom_dialog
 layout design_bottom_navigation_item

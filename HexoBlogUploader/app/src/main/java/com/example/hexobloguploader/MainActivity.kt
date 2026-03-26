@@ -95,8 +95,9 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_settings -> {
-                    // 打开设置界面（待实现）
-                    showToast("设置功能待实现")
+                    // 打开设置界面
+                    val intent = android.content.Intent(this, SettingsActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false

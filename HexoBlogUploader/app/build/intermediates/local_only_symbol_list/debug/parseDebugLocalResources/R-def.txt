@@ -1,14 +1,21 @@
 R_DEF: Internal format may change without notice
 local
+color background
 color black
+color primary
 color purple_200
 color purple_500
 color purple_700
+color secondary
 color teal_200
 color teal_700
+color text_primary
+color text_secondary
 color white
+id buttonAbout
 id buttonBack
 id buttonCheckStatus
+id buttonCheckUpdates
 id buttonClearTestData
 id buttonCloneMyBlog
 id buttonCloneRepo
@@ -16,15 +23,25 @@ id buttonCommitPush
 id buttonCreateTestPost
 id buttonDelete
 id buttonEdit
+id buttonFeedback
 id buttonInitStorage
 id buttonListPosts
 id buttonPreview
 id buttonPullUpdates
 id buttonResetChanges
 id buttonSave
+id buttonSaveBlog
+id buttonSaveGithub
+id buttonSaveStorage
 id buttonTestClone
 id buttonUpload
 id chipGroupTags
+id editAuthorName
+id editBlogTitle
+id editGithubToken
+id editGithubUsername
+id editRepoUrl
+id editStoragePath
 id editTextCategories
 id editTextContent
 id editTextTags
@@ -57,6 +74,7 @@ layout activity_blog_detail
 layout activity_edit_post
 layout activity_git_manager
 layout activity_main
+layout activity_settings
 layout activity_test_storage
 layout item_blog
 menu menu_main

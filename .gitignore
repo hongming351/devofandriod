@@ -1,0 +1,11 @@
+# 标准的 Android .gitignore 应该包含：
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx

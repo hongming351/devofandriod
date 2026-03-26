@@ -73,6 +73,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
+        <activity
+            android:name="com.example.hexobloguploader.SettingsActivity"
+            android:exported="false"
+            android:parentActivityName="com.example.hexobloguploader.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
 
         <provider
             android:name="androidx.startup.InitializationProvider"

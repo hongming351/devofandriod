@@ -22,5 +22,9 @@
     {
         "merged": "com.example.hexobloguploader.app-mergeDebugResources-52:/layout/activity_blog_detail.xml",
         "source": "com.example.hexobloguploader.app-main-55:/layout/activity_blog_detail.xml"
+    },
+    {
+        "merged": "com.example.hexobloguploader.app-mergeDebugResources-52:/layout/activity_settings.xml",
+        "source": "com.example.hexobloguploader.app-main-55:/layout/activity_settings.xml"
     }
 ]
