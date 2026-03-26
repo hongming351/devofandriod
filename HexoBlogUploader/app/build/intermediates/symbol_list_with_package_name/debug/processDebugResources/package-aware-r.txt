@@ -3478,6 +3478,7 @@ id material_timepicker_ok_button
 id material_timepicker_view
 id material_value_index
 id matrix
+id menu_delete
 id menu_git_manager
 id menu_refresh
 id menu_settings
@@ -3946,6 +3947,7 @@ layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
 layout support_simple_spinner_dropdown_item
+menu menu_blog_detail
 menu menu_main
 mipmap ic_directory_parent
 mipmap ic_type_file

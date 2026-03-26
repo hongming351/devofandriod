@@ -8,6 +8,7 @@ import java.io.File
 
 class BlogDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBlogDetailBinding
+    private var currentBlogId: String = ""
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,7 @@ class BlogDetailActivity : AppCompatActivity() {
         
         // 设置菜单
         binding.toolbar.inflateMenu(R.menu.menu_blog_detail)
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+        binding.toolbar.setOnMenuItemClickListener { menuItem: android.view.MenuItem ->
             when (menuItem.itemId) {
                 R.id.menu_delete -> {
                     deleteBlog()
@@ -60,6 +61,9 @@ class BlogDetailActivity : AppCompatActivity() {
             // 显示标签
             binding.textBlogTags.text = "标签: ${tags.joinToString(", ")}"
             binding.textFilePath.text = "文件路径: $filePath"
+            
+            // 保存 id 到实例变量以备后用
+            this.currentBlogId = id
         } else {
             // 如果没有数据，显示示例
             supportActionBar?.title = "博客详情"
