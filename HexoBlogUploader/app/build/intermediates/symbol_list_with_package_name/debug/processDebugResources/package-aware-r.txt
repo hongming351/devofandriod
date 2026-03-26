@@ -3264,6 +3264,9 @@ id buttonDelete
 id buttonEdit
 id buttonFeedback
 id buttonInitStorage
+id buttonInsertCode
+id buttonInsertImage
+id buttonInsertLink
 id buttonListPosts
 id buttonPanel
 id buttonPreview

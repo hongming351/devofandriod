@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.example.hexobloguploader.databinding.ActivityBlogDetailBinding
+import java.io.File
 
 class BlogDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityBlogDetailBinding
@@ -24,6 +25,18 @@ class BlogDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
         binding.toolbar.setNavigationOnClickListener {
             finish()
+        }
+        
+        // 设置菜单
+        binding.toolbar.inflateMenu(R.menu.menu_blog_detail)
+        binding.toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.menu_delete -> {
+                    deleteBlog()
+                    true
+                }
+                else -> false
+            }
         }
     }
     
@@ -81,12 +94,49 @@ class BlogDetailActivity : AppCompatActivity() {
     }
     
     private fun showEditBlog() {
-        // 后续将实现编辑功能
-        android.widget.Toast.makeText(
-            this,
-            "打开编辑器",
-            android.widget.Toast.LENGTH_SHORT
-        ).show()
+        // 从 Intent 获取博客数据
+        val bundle = intent.getBundleExtra("BLOG_DATA")
+        
+        if (bundle != null) {
+            val id = bundle.getString("id", "")
+            val title = bundle.getString("title", "未命名博客")
+            val content = bundle.getString("content", "")
+            val date = bundle.getString("date", "")
+            val tags = bundle.getStringArrayList("tags") ?: emptyList<String>()
+            val filePath = bundle.getString("filePath", "")
+            
+            // 从文件路径提取文件名
+            val fileName = if (filePath.isNotEmpty()) {
+                File(filePath).name
+            } else {
+                "${date}-${title.replace(" ", "-").replace("[^a-zA-Z0-9-]".toRegex(), "").lowercase()}.md"
+            }
+            
+            // 创建 Post 对象
+            val post = com.example.hexobloguploader.model.Post(
+                id = id,
+                title = title,
+                fileName = fileName,
+                content = content,
+                date = date,
+                categories = listOf("未分类"), // 暂时使用默认分类
+                tags = tags,
+                filePath = filePath,
+                lastModified = System.currentTimeMillis()
+            )
+            
+            // 打开 EditPostActivity 进行编辑
+            val intent = android.content.Intent(this, EditPostActivity::class.java).apply {
+                putExtra("POST_DATA", post)
+            }
+            startActivity(intent)
+        } else {
+            android.widget.Toast.makeText(
+                this,
+                "无法获取博客数据",
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+        }
     }
     
     private fun showPreview() {
@@ -114,5 +164,68 @@ class BlogDetailActivity : AppCompatActivity() {
             "保存博客",
             android.widget.Toast.LENGTH_SHORT
         ).show()
+    }
+    
+    /**
+     * 删除博客
+     */
+    private fun deleteBlog() {
+        // 从 Intent 获取博客数据
+        val bundle = intent.getBundleExtra("BLOG_DATA")
+        
+        if (bundle != null) {
+            val id = bundle.getString("id", "")
+            val title = bundle.getString("title", "未命名博客")
+            val filePath = bundle.getString("filePath", "")
+            
+            // 显示确认对话框
+            android.app.AlertDialog.Builder(this)
+                .setTitle("删除博客")
+                .setMessage("确定要删除博客《$title》吗？此操作不可撤销。")
+                .setPositiveButton("删除") { _, _ ->
+                    // 创建 Post 对象用于删除
+                    val post = com.example.hexobloguploader.model.Post(
+                        id = id,
+                        title = title,
+                        fileName = File(filePath).name,
+                        content = "",
+                        date = "",
+                        categories = emptyList(),
+                        tags = emptyList(),
+                        filePath = filePath,
+                        lastModified = System.currentTimeMillis()
+                    )
+                    
+                    // 使用存储管理器删除博客
+                    val storageManager = com.example.hexobloguploader.storage.BlogStorageManager(this)
+                    val success = storageManager.deletePost(post)
+                    
+                    if (success) {
+                        android.widget.Toast.makeText(
+                            this,
+                            "博客删除成功",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                        
+                        // 返回并刷新列表
+                        setResult(RESULT_OK)
+                        finish()
+                    } else {
+                        android.widget.Toast.makeText(
+                            this,
+                            "博客删除失败",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                .setNegativeButton("取消", null)
+                .show()
+        } else {
+            android.widget.Toast.makeText(
+                this,
+                "无法获取博客数据",
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 }

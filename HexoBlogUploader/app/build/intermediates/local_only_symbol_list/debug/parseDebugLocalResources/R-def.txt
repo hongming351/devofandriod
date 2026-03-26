@@ -25,6 +25,9 @@ id buttonDelete
 id buttonEdit
 id buttonFeedback
 id buttonInitStorage
+id buttonInsertCode
+id buttonInsertImage
+id buttonInsertLink
 id buttonListPosts
 id buttonPreview
 id buttonPullUpdates
@@ -48,6 +51,7 @@ id editTextTags
 id editTextTitle
 id fabAddBlog
 id fabSave
+id menu_delete
 id menu_git_manager
 id menu_refresh
 id menu_settings
@@ -77,6 +81,7 @@ layout activity_main
 layout activity_settings
 layout activity_test_storage
 layout item_blog
+menu menu_blog_detail
 menu menu_main
 string app_name
 string hello_world

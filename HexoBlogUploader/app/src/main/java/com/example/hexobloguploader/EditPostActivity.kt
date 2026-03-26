@@ -153,6 +153,19 @@ categories: []
             deletePost()
         }
         
+        // Markdown 工具栏按钮
+        binding.buttonInsertImage.setOnClickListener {
+            insertImage()
+        }
+        
+        binding.buttonInsertLink.setOnClickListener {
+            insertLink()
+        }
+        
+        binding.buttonInsertCode.setOnClickListener {
+            insertCodeBlock()
+        }
+        
         // 新建文章时不显示删除按钮
         binding.buttonDelete.visibility = if (isNewPost) android.view.View.GONE else android.view.View.VISIBLE
     }
@@ -320,6 +333,138 @@ categories: []
                 .setNegativeButton("取消", null)
                 .show()
         }
+    }
+    
+    /**
+     * 插入图片
+     */
+    private fun insertImage() {
+        // 显示图片插入对话框
+        android.app.AlertDialog.Builder(this)
+            .setTitle("插入图片")
+            .setMessage("选择图片插入方式:")
+            .setPositiveButton("从相册选择") { _, _ ->
+                selectImageFromGallery()
+            }
+            .setNegativeButton("输入图片URL") { _, _ ->
+                showImageUrlDialog()
+            }
+            .setNeutralButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 从相册选择图片
+     */
+    private fun selectImageFromGallery() {
+        // 这里应该实现图片选择功能
+        // 暂时显示提示
+        Toast.makeText(this, "图片选择功能开发中...", Toast.LENGTH_SHORT).show()
+        
+        // 模拟插入图片
+        val imageMarkdown = "![图片描述](https://example.com/image.jpg)"
+        insertTextAtCursor(imageMarkdown)
+    }
+    
+    /**
+     * 显示图片URL输入对话框
+     */
+    private fun showImageUrlDialog() {
+        val editText = android.widget.EditText(this)
+        editText.hint = "输入图片URL"
+        editText.setText("https://example.com/image.jpg")
+        
+        android.app.AlertDialog.Builder(this)
+            .setTitle("插入图片")
+            .setMessage("请输入图片URL:")
+            .setView(editText)
+            .setPositiveButton("插入") { _, _ ->
+                val url = editText.text.toString().trim()
+                if (url.isNotEmpty()) {
+                    val imageMarkdown = "![图片描述]($url)"
+                    insertTextAtCursor(imageMarkdown)
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 插入链接
+     */
+    private fun insertLink() {
+        val editTextUrl = android.widget.EditText(this)
+        editTextUrl.hint = "输入链接URL"
+        
+        val editTextText = android.widget.EditText(this)
+        editTextText.hint = "输入链接文本"
+        
+        val layout = android.widget.LinearLayout(this)
+        layout.orientation = android.widget.LinearLayout.VERTICAL
+        layout.setPadding(32, 16, 32, 16)
+        layout.addView(editTextUrl)
+        layout.addView(editTextText)
+        
+        android.app.AlertDialog.Builder(this)
+            .setTitle("插入链接")
+            .setView(layout)
+            .setPositiveButton("插入") { _, _ ->
+                val url = editTextUrl.text.toString().trim()
+                val text = editTextText.text.toString().trim()
+                if (url.isNotEmpty() && text.isNotEmpty()) {
+                    val linkMarkdown = "[$text]($url)"
+                    insertTextAtCursor(linkMarkdown)
+                }
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 插入代码块
+     */
+    private fun insertCodeBlock() {
+        val editText = android.widget.EditText(this)
+        editText.hint = "输入编程语言（可选）"
+        
+        android.app.AlertDialog.Builder(this)
+            .setTitle("插入代码块")
+            .setMessage("输入编程语言（如：kotlin, java, python）：")
+            .setView(editText)
+            .setPositiveButton("插入") { _, _ ->
+                val language = editText.text.toString().trim()
+                val codeBlock = if (language.isNotEmpty()) {
+                    "```$language\n// 在这里输入代码\n```"
+                } else {
+                    "```\n// 在这里输入代码\n```"
+                }
+                insertTextAtCursor(codeBlock)
+            }
+            .setNegativeButton("取消", null)
+            .show()
+    }
+    
+    /**
+     * 在光标位置插入文本
+     */
+    private fun insertTextAtCursor(text: String) {
+        val editText = binding.editTextContent
+        val start = editText.selectionStart
+        val end = editText.selectionEnd
+        
+        val content = editText.text.toString()
+        val newContent = StringBuilder(content)
+            .insert(start, text)
+            .toString()
+        
+        editText.setText(newContent)
+        
+        // 将光标移动到插入文本的末尾
+        val newCursorPosition = start + text.length
+        editText.setSelection(newCursorPosition)
+        
+        // 更新预览
+        updatePreview()
     }
     
     override fun onBackPressed() {

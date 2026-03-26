@@ -3263,6 +3263,9 @@ int id buttonDelete 0x7f08006c
 int id buttonEdit 0x7f08006d
 int id buttonFeedback 0x7f08006e
 int id buttonInitStorage 0x7f08006f
+int id buttonInsertCode 0x7f080249
+int id buttonInsertImage 0x7f08024a
+int id buttonInsertLink 0x7f08024b
 int id buttonListPosts 0x7f080070
 int id buttonPanel 0x7f080071
 int id buttonPreview 0x7f080072

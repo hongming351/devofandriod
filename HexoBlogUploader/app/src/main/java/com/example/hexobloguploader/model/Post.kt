@@ -1,6 +1,7 @@
 package com.example.hexobloguploader.model
 
 import java.io.File
+import java.io.Serializable
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -19,7 +20,7 @@ data class Post(
     val tags: List<String>,        // 标签
     val filePath: String,          // 完整文件路径
     val lastModified: Long = System.currentTimeMillis()
-) {
+) : Serializable {
     companion object {
         /**
          * 从文件创建 Post 对象
