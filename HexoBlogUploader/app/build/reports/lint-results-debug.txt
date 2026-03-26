@@ -1,0 +1,442 @@
+D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8: Warning: READ_EXTERNAL_STORAGE is deprecated (and is not granted) when targeting Android 13+. If you need to query or interact with MediaStore or media files on the shared storage, you should instead use one or more new storage permissions: READ_MEDIA_IMAGES, READ_MEDIA_VIDEO or READ_MEDIA_AUDIO. [ScopedStorage]
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:9: Warning: WRITE_EXTERNAL_STORAGE is deprecated (and is not granted) when targeting Android 13+. If you need to write to shared storage, use the MediaStore.createWriteRequest intent. [ScopedStorage]
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ScopedStorage":
+   Scoped storage is enforced on Android 10+ (or Android 11+ if using
+   requestLegacyExternalStorage). In particular, WRITE_EXTERNAL_STORAGE will
+   no longer provide write access to all files; it will provide the equivalent
+   of READ_EXTERNAL_STORAGE instead.
+
+   As of Android 13, if you need to query or interact with MediaStore or media
+   files on the shared storage, you should be using instead one or more new
+   storage permissions:
+   * android.permission.READ_MEDIA_IMAGES
+   * android.permission.READ_MEDIA_VIDEO
+   * android.permission.READ_MEDIA_AUDIO
+
+   and then add maxSdkVersion="33" to the older permission. See the developer
+   guide for how to do this:
+   https://developer.android.com/about/versions/13/behavior-changes-13#granula
+   r-media-permissions
+
+   The MANAGE_EXTERNAL_STORAGE permission can be used to manage all files, but
+   it is rarely necessary and most apps on Google Play are not allowed to use
+   it. Most apps should instead migrate to use scoped storage. To modify or
+   delete files, apps should request write access from the user as described
+   at https://goo.gle/android-mediastore-createwriterequest.
+
+   To learn more, read these resources: Play policy:
+   https://goo.gle/policy-storage-help Allowable use cases:
+   https://goo.gle/policy-storage-usecases
+
+   https://goo.gle/android-storage-usecases
+
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:73: Warning: The vertically scrolling ScrollView should not contain another vertically scrolling widget (ScrollView) [NestedScrolling]
+            <ScrollView
+             ~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:48: Warning: The vertically scrolling ScrollView should not contain another vertically scrolling widget (ScrollView) [NestedScrolling]
+            <ScrollView
+             ~~~~~~~~~~
+
+   Explanation for issues of type "NestedScrolling":
+   A scrolling widget such as a ScrollView should not contain any nested
+   scrolling widgets since this has various usability issues
+
+D:\devofandriod\HexoBlogUploader\app\build.gradle:13: Warning: Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details. [OldTargetApi]
+        targetSdk 34
+        ~~~~~~~~~~~~
+
+   Explanation for issues of type "OldTargetApi":
+   When your application runs on a version of Android that is more recent than
+   your targetSdkVersion specifies that it has been tested with, various
+   compatibility modes kick in. This ensures that your application continues
+   to work, but it may look out of place. For example, if the targetSdkVersion
+   is less than 14, your app may get an option button in the UI.
+
+   To fix this issue, set the targetSdkVersion to the highest available value.
+   Then test your app to make sure everything works correctly. You may want to
+   consult the compatibility notes to see what changes apply to each version
+   you are adding support for:
+   https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
+   as well as follow this guide:
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.
+   html
+
+   https://developer.android.com/distribute/best-practices/develop/target-sdk.html
+
+D:\devofandriod\HexoBlogUploader\app\build.gradle:35: Warning: If you plan to use data binding in a Kotlin project, you should apply the kotlin-kapt plugin. [DataBindingWithoutKapt]
+        dataBinding true
+        ~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "DataBindingWithoutKapt":
+   Apps that use Kotlin and data binding should also apply the kotlin-kapt
+   plugin.
+
+   https://kotlinlang.org/docs/reference/kapt.html
+
+C:\Users\34955\.gradle\caches\modules-2\files-2.1\org.eclipse.jgit\org.eclipse.jgit\6.7.0.202309050840-r\30599f446abe09ab51cfe24d3433170f2599f9cc\org.eclipse.jgit-6.7.0.202309050840-r.jar: Warning: checkClientTrusted is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers [TrustAllX509TrustManager]
+C:\Users\34955\.gradle\caches\modules-2\files-2.1\org.eclipse.jgit\org.eclipse.jgit\6.7.0.202309050840-r\30599f446abe09ab51cfe24d3433170f2599f9cc\org.eclipse.jgit-6.7.0.202309050840-r.jar: Warning: checkServerTrusted is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers [TrustAllX509TrustManager]
+
+   Explanation for issues of type "TrustAllX509TrustManager":
+   This check looks for X509TrustManager implementations whose
+   checkServerTrusted or checkClientTrusted methods do nothing (thus trusting
+   any certificate chain) which could result in insecure network traffic
+   caused by trusting arbitrary TLS/SSL certificates presented by peers.
+
+   https://goo.gle/TrustAllX509TrustManager
+
+D:\devofandriod\HexoBlogUploader\app\src\main\res\values\themes.xml:13: Warning: Unnecessary; SDK_INT is always >= 21 [ObsoleteSdkInt]
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+                                            ~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ObsoleteSdkInt":
+   This check flags version checks that are not necessary, because the
+   minSdkVersion (or surrounding known API level) is already at least as high
+   as the version checked for.
+
+   Similarly, it also looks for resources in -vNN folders, such as values-v14
+   where the version qualifier is less than or equal to the minSdkVersion,
+   where the contents should be merged into the best folder.
+
+D:\devofandriod\HexoBlogUploader\app\src\main\res\values\colors.xml:3: Warning: The resource R.color.purple_200 appears to be unused [UnusedResources]
+    <color name="purple_200">#FFBB86FC</color>
+           ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\values\strings.xml:3: Warning: The resource R.string.hello_world appears to be unused [UnusedResources]
+    <string name="hello_world">Hello World!</string>
+            ~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "UnusedResources":
+   Unused resources make applications larger and slow down builds.
+
+
+   The unused resource check can ignore tests. If you want to include
+   resources that are only referenced from tests, consider packaging them in a
+   test source set instead.
+
+   You can include test sources in the unused resource check by setting the
+   system property lint.unused-resources.include-tests =true, and to exclude
+   them (usually for performance reasons), use
+   lint.unused-resources.exclude-tests =true.
+   ,
+
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:151: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:161: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:103: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:111: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:120: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:152: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:161: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:171: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:78: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:86: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:103: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:111: Warning: Buttons in button bars should be borderless; use style="?android:attr/buttonBarButtonStyle" (and ?android:attr/buttonBarStyle on the parent) [ButtonStyle]
+        <Button
+         ~~~~~~
+
+   Explanation for issues of type "ButtonStyle":
+   Button bars typically use a borderless style for the buttons. Set the
+   style="?android:attr/buttonBarButtonStyle" attribute on each of the
+   buttons, and set style="?android:attr/buttonBarStyle" on the parent layout
+
+   https://d.android.com/r/studio-ui/designer/material/dialogs
+
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:61: Warning: Missing autofillHints attribute [Autofill]
+            <EditText
+             ~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:78: Warning: Missing autofillHints attribute [Autofill]
+            <EditText
+             ~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:94: Warning: Missing autofillHints attribute [Autofill]
+            <EditText
+             ~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:110: Warning: Missing autofillHints attribute [Autofill]
+            <EditText
+             ~~~~~~~~
+
+   Explanation for issues of type "Autofill":
+   Specify an autofillHints attribute when targeting SDK version 26 or higher
+   or explicitly specify that the view is not important for autofill. Your app
+   can help an autofill service classify the data correctly by providing the
+   meaning of each view that could be autofillable, such as views representing
+   usernames, passwords, credit card fields, email addresses, etc.
+
+   The hints can have any value, but it is recommended to use predefined
+   values like 'username' for a username or 'creditCardNumber' for a credit
+   card number. For a list of all predefined autofill hint constants, see the
+   AUTOFILL_HINT_ constants in the View reference at
+   https://developer.android.com/reference/android/view/View.html.
+
+   You can mark a view unimportant for autofill by specifying an
+   importantForAutofill attribute on that view or a parent view. See
+   https://developer.android.com/reference/android/view/View.html#setImportant
+   ForAutofill(int).
+
+   https://developer.android.com/guide/topics/text/autofill.html
+
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogAdapter.kt:38: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            contentPreviewTextView.text = blog.content.take(100) + if (blog.content.length > 100) "..." else ""
+                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogDetailActivity.kt:44: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            binding.textBlogDate.text = "发布日期: $date"
+                                        ~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogDetailActivity.kt:48: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            binding.textBlogTags.text = "标签: ${tags.joinToString(", ")}"
+                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogDetailActivity.kt:49: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            binding.textFilePath.text = "文件路径: $filePath"
+                                        ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogDetailActivity.kt:54: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            binding.textBlogDate.text = "发布日期: 2025-03-25"
+                                         ~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogDetailActivity.kt:55: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+            binding.textBlogContent.text = "这是博客的详细内容。\n\n你可以在这里编辑和预览博客文章。\n\n支持 Markdown 格式。"
+                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogDetailActivity.kt:55: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            binding.textBlogContent.text = "这是博客的详细内容。\n\n你可以在这里编辑和预览博客文章。\n\n支持 Markdown 格式。"
+                                                                              ~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\BlogDetailActivity.kt:57: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            binding.textFilePath.text = "文件路径: /sample/blog.md"
+                                         ~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\EditPostActivity.kt:169: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        binding.textStats.text = "字符: $charCount | 单词: $wordCount"
+                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:71: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        binding.textRepositoryInfo.text = """
+                                          ^
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:74: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            本地路径: /storage/emulated/0/HexoBlog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:75: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            Git目录: ✅ 存在
+~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:76: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            Git路径: /storage/emulated/0/HexoBlog/.git
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:79: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            存储大小: 15.2 KB
+~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:163: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        binding.textRepositoryInfo.text = """
+                                          ^
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:166: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            本地路径: /storage/emulated/0/HexoBlog
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:167: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            Git目录: ✅ 存在
+~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:168: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            Git路径: /storage/emulated/0/HexoBlog/.git
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:171: Warning: String literal in setText can not be translated. Use Android resources instead. [SetTextI18n]
+            存储大小: 15.2 KB
+~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\SimpleGitManagerActivity.kt:180: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        binding.textLog.text = "$currentText\n[$timestamp] $message"
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\TestStorageActivity.kt:134: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        binding.textStorageInfo.text = """
+                                       ^
+D:\devofandriod\HexoBlogUploader\app\src\main\java\com\example\hexobloguploader\TestStorageActivity.kt:151: Warning: Do not concatenate text displayed with setText. Use resource string with placeholders. [SetTextI18n]
+        binding.textLog.text = "$currentText\n[$timestamp] $message"
+                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "SetTextI18n":
+   When calling TextView#setText
+   * Never call Number#toString() to format numbers; it will not handle
+   fraction separators and locale-specific digits properly. Consider using
+   String#format with proper format specifications (%d or %f) instead.
+   * Do not pass a string literal (e.g. "Hello") to display text. Hardcoded
+   text can not be properly translated to other languages. Consider using
+   Android resource strings instead.
+   * Do not build messages by concatenating text chunks. Such messages can not
+   be properly translated.
+
+   https://developer.android.com/guide/topics/resources/localization.html
+
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:35: Warning: Hardcoded string "博客标题", should use @string resource [HardcodedText]
+                android:text="博客标题"
+                ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:44: Warning: Hardcoded string "发布日期: 2025-03-25", should use @string resource [HardcodedText]
+                android:text="发布日期: 2025-03-25"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:53: Warning: Hardcoded string "标签: 示例, 测试", should use @string resource [HardcodedText]
+                android:text="标签: 示例, 测试"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:67: Warning: Hardcoded string "博客内容...", should use @string resource [HardcodedText]
+                android:text="博客内容..."
+                ~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:76: Warning: Hardcoded string "文件路径: /path/to/blog.md", should use @string resource [HardcodedText]
+                android:text="文件路径: /path/to/blog.md"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:92: Warning: Hardcoded string "编辑", should use @string resource [HardcodedText]
+                    android:text="编辑"
+                    ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:101: Warning: Hardcoded string "预览", should use @string resource [HardcodedText]
+                    android:text="预览"
+                    ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:111: Warning: Hardcoded string "上传", should use @string resource [HardcodedText]
+                    android:text="上传"
+                    ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_blog_detail.xml:126: Warning: Hardcoded string "保存", should use @string resource [HardcodedText]
+        android:contentDescription="保存"
+        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:28: Warning: Hardcoded string "字符: 0 | 单词: 0", should use @string resource [HardcodedText]
+            android:text="字符: 0 | 单词: 0"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:36: Warning: Hardcoded string "预览", should use @string resource [HardcodedText]
+            android:text="预览"
+            ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:56: Warning: Hardcoded string "标题:", should use @string resource [HardcodedText]
+                android:text="标题:"
+                ~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:65: Warning: Hardcoded string "输入文章标题", should use @string resource [HardcodedText]
+                android:hint="输入文章标题"
+                ~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:73: Warning: Hardcoded string "标签 (用逗号分隔):", should use @string resource [HardcodedText]
+                android:text="标签 (用逗号分隔):"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:82: Warning: Hardcoded string "例如: Android, Kotlin, 教程", should use @string resource [HardcodedText]
+                android:hint="例如: Android, Kotlin, 教程"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:89: Warning: Hardcoded string "分类 (用逗号分隔):", should use @string resource [HardcodedText]
+                android:text="分类 (用逗号分隔):"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:98: Warning: Hardcoded string "例如: 技术, 编程, Android", should use @string resource [HardcodedText]
+                android:hint="例如: 技术, 编程, Android"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:105: Warning: Hardcoded string "内容 (Markdown 格式):", should use @string resource [HardcodedText]
+                android:text="内容 (Markdown 格式):"
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:114: Warning: Hardcoded string "输入 Markdown 内容...", should use @string resource [HardcodedText]
+                android:hint="输入 Markdown 内容..."
+                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:137: Warning: Hardcoded string "预览内容...", should use @string resource [HardcodedText]
+            android:text="预览内容..."
+            ~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:156: Warning: Hardcoded string "删除", should use @string resource [HardcodedText]
+            android:text="删除"
+            ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_edit_post.xml:166: Warning: Hardcoded string "保存", should use @string resource [HardcodedText]
+            android:text="保存"
+            ~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:33: Warning: Hardcoded string "仓库信息加载中...", should use @string resource [HardcodedText]
+                android:text="仓库信息加载中..."
+                ~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:43: Warning: Hardcoded string "操作进度:", should use @string resource [HardcodedText]
+                android:text="操作进度:"
+                ~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:52: Warning: Hardcoded string "等待操作...", should use @string resource [HardcodedText]
+                android:text="等待操作..."
+                ~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:68: Warning: Hardcoded string "操作日志:", should use @string resource [HardcodedText]
+                android:text="操作日志:"
+                ~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:108: Warning: Hardcoded string "检查状态", should use @string resource [HardcodedText]
+            android:text="检查状态"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:116: Warning: Hardcoded string "克隆仓库", should use @string resource [HardcodedText]
+            android:text="克隆仓库"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:125: Warning: Hardcoded string "测试克隆", should use @string resource [HardcodedText]
+            android:text="测试克隆"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:140: Warning: Hardcoded string "克隆我的 Hexo 博客", should use @string resource [HardcodedText]
+            android:text="克隆我的 Hexo 博客"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:157: Warning: Hardcoded string "拉取更新", should use @string resource [HardcodedText]
+            android:text="拉取更新"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:166: Warning: Hardcoded string "提交推送", should use @string resource [HardcodedText]
+            android:text="提交推送"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_git_manager.xml:176: Warning: Hardcoded string "重置更改", should use @string resource [HardcodedText]
+            android:text="重置更改"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_main.xml:30: Warning: Hardcoded string "添加博客", should use @string resource [HardcodedText]
+            android:contentDescription="添加博客"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_main.xml:51: Warning: Hardcoded string "暂无博客文章n点击右下角按钮添加第一篇博客", should use @string resource [HardcodedText]
+            android:text="暂无博客文章\n点击右下角按钮添加第一篇博客"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:33: Warning: Hardcoded string "存储信息加载中...", should use @string resource [HardcodedText]
+                android:text="存储信息加载中..."
+                ~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:43: Warning: Hardcoded string "操作日志:", should use @string resource [HardcodedText]
+                android:text="操作日志:"
+                ~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:83: Warning: Hardcoded string "初始化存储", should use @string resource [HardcodedText]
+            android:text="初始化存储"
+            ~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:91: Warning: Hardcoded string "创建测试文章", should use @string resource [HardcodedText]
+            android:text="创建测试文章"
+            ~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:108: Warning: Hardcoded string "列出文章", should use @string resource [HardcodedText]
+            android:text="列出文章"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:116: Warning: Hardcoded string "清理测试数据", should use @string resource [HardcodedText]
+            android:text="清理测试数据"
+            ~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\activity_test_storage.xml:126: Warning: Hardcoded string "返回主界面", should use @string resource [HardcodedText]
+        android:text="返回主界面"
+        ~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\item_blog.xml:20: Warning: Hardcoded string "博客标题", should use @string resource [HardcodedText]
+            android:text="博客标题"
+            ~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\item_blog.xml:33: Warning: Hardcoded string "2025-03-25", should use @string resource [HardcodedText]
+            android:text="2025-03-25"
+            ~~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\layout\item_blog.xml:45: Warning: Hardcoded string "博客内容预览...", should use @string resource [HardcodedText]
+            android:text="博客内容预览..."
+            ~~~~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\menu\menu_main.xml:7: Warning: Hardcoded string "Git管理", should use @string resource [HardcodedText]
+        android:title="Git管理"
+        ~~~~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\menu\menu_main.xml:12: Warning: Hardcoded string "刷新", should use @string resource [HardcodedText]
+        android:title="刷新"
+        ~~~~~~~~~~~~~~~~~~
+D:\devofandriod\HexoBlogUploader\app\src\main\res\menu\menu_main.xml:17: Warning: Hardcoded string "设置", should use @string resource [HardcodedText]
+        android:title="设置"
+        ~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "HardcodedText":
+   Hardcoding text attributes directly in layout files is bad for several
+   reasons:
+
+   * When creating configuration variations (for example for landscape or
+   portrait) you have to repeat the actual text (and keep it up to date when
+   making changes)
+
+   * The application cannot be translated to other languages by just adding
+   new translations for existing string resources.
+
+   There are quickfixes to automatically extract this hardcoded string into a
+   resource lookup.
+
+0 errors, 97 warnings

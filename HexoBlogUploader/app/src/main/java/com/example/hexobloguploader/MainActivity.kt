@@ -2,19 +2,30 @@ package com.example.hexobloguploader
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.hexobloguploader.databinding.ActivityMainBinding
 import com.example.hexobloguploader.storage.BlogStorageManager
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: com.example.hexobloguploader.databinding.ActivityMainBinding
     private lateinit var blogAdapter: BlogAdapter
     private lateinit var storageManager: BlogStorageManager
     
     companion object {
-        private const val REQUEST_EDIT_POST = 1001
         private const val TAG = "MainActivity"
+    }
+    
+    // 使用新的Activity Result API替代过时的startActivityForResult
+    private val editPostLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == RESULT_OK) {
+            // 文章编辑/创建成功，刷新列表
+            loadBlogs()
+            showToast("文章保存成功")
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,9 +34,10 @@ class MainActivity : AppCompatActivity() {
         try {
             Log.d(TAG, "MainActivity onCreate started")
             
-            binding = ActivityMainBinding.inflate(layoutInflater)
+            binding = com.example.hexobloguploader.databinding.ActivityMainBinding.inflate(layoutInflater)
             setContentView(binding.root)
 
+            // 设置Toolbar作为ActionBar
             setSupportActionBar(binding.toolbar)
             supportActionBar?.title = "Hexo 博客上传器"
 
@@ -45,10 +57,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     
-    private fun setupToolbar() {
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = "Hexo 博客管理"
-    }
+    // setupToolbar方法已移除，因为Toolbar已经在onCreate中设置
     
     private fun setupRecyclerView() {
         blogAdapter = BlogAdapter { blog ->
@@ -67,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         binding.fabAddBlog.setOnClickListener {
             // 打开 Markdown 编辑器创建新文章
             val intent = android.content.Intent(this, EditPostActivity::class.java)
-            startActivityForResult(intent, REQUEST_EDIT_POST)
+            editPostLauncher.launch(intent)
         }
     }
     
@@ -111,15 +120,6 @@ class MainActivity : AppCompatActivity() {
         loadBlogsFromStorage()
     }
     
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: android.content.Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        
-        if (requestCode == REQUEST_EDIT_POST && resultCode == RESULT_OK) {
-            // 文章编辑/创建成功，刷新列表
-            loadBlogs()
-            showToast("文章保存成功")
-        }
-    }
     
     private fun initStorage() {
         val success = storageManager.initStorage()

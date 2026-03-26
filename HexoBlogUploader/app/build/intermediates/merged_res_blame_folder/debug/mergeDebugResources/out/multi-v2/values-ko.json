@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.hexobloguploader.app-mergeDebugResources-48:/values-ko/values-ko.xml",
+            "outputFile": "com.example.hexobloguploader.app-mergeDebugResources-51:/values-ko/values-ko.xml",
             "map": [
                 {
                     "source": "C:\\Users\\34955\\.gradle\\caches\\9.0-milestone-1\\transforms\\a6d0ab06f5a4d6338d53588363389053\\transformed\\appcompat-1.6.1\\res\\values-ko\\values-ko.xml",

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.example.hexobloguploader.app-mergeDebugResources-48:/values-fr/values-fr.xml",
+            "outputFile": "com.example.hexobloguploader.app-mergeDebugResources-51:/values-fr/values-fr.xml",
             "map": [
                 {
                     "source": "C:\\Users\\34955\\.gradle\\caches\\9.0-milestone-1\\transforms\\44b858ebbc3943d0255b28f5c5b8f5bf\\transformed\\filepicker-1.1.1\\res\\values-fr\\values-fr.xml",

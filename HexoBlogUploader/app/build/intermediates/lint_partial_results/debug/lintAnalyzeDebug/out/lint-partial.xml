@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.3.0" type="partial_results">
+    <map id="UnsafeIntentLaunch">
+            <map id="unprotected">
+                <entry
+                    name="com.example.hexobloguploader.MainActivity"
+                    boolean="true"/>
+            </map>
+    </map>
+    <map id="UnusedResources">
+        <location id="R.color.purple_200"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/colors.xml"
+            line="3"
+            column="12"
+            startOffset="64"
+            endLine="3"
+            endColumn="29"
+            endOffset="81"/>
+        <entry
+            name="model"
+            string="attr[actionBarSize(R),colorPrimary(R),actionBarTheme(R),colorPrimaryVariant(R)],color[purple_200(D),purple_500(U),purple_700(U),teal_200(U),teal_700(U),black(U),white(U)],id[toolbar(U),textBlogTitle(U),textBlogDate(U),textBlogTags(U),textBlogContent(U),textFilePath(U),buttonEdit(U),buttonPreview(U),buttonUpload(U),fabSave(U),textStats(U),scrollViewEdit(U),editTextTitle(U),editTextTags(U),editTextCategories(U),editTextContent(U),scrollViewPreview(U),textPreview(U),buttonDelete(U),buttonSave(U),textRepositoryInfo(U),textProgress(U),progressBar(U),scrollView(U),textLog(U),buttonCheckStatus(U),buttonCloneRepo(U),buttonTestClone(U),buttonCloneMyBlog(U),buttonPullUpdates(U),buttonCommitPush(U),buttonResetChanges(U),fabAddBlog(R),recyclerViewBlogs(R),textEmptyState(R),textStorageInfo(U),buttonInitStorage(U),buttonCreateTestPost(U),buttonListPosts(U),buttonClearTestData(U),buttonBack(U),textBlogContentPreview(U),chipGroupTags(U),menu_git_manager(U),menu_refresh(U),menu_settings(U)],layout[activity_blog_detail(U),activity_edit_post(U),activity_git_manager(U),activity_main(U),activity_test_storage(U),item_blog(U)],menu[menu_main(U)],string[app_name(U),appbar_scrolling_view_behavior(R),hello_world(D)],style[Theme_HexoBlogUploader(U),ThemeOverlay_AppCompat_Dark_ActionBar(R),ThemeOverlay_AppCompat_Light(R),Theme_MaterialComponents_DayNight_NoActionBar(R)],xml[data_extraction_rules(U),backup_rules(U)];39^44^0^45^41^b,3a^1^0^2,3b^1^0^2,3c^1^0^2^b,3d^1^0^2,3e^c^d^34,43^46^5^6^a^7^8^9^3;;;"/>
+        <location id="R.string.hello_world"
+            file="${:app*debug*MAIN*sourceProvider*0*resDir*0}/values/strings.xml"
+            line="3"
+            column="13"
+            startOffset="74"
+            endLine="3"
+            endColumn="31"
+            endOffset="92"/>
+    </map>
+
+</incidents>

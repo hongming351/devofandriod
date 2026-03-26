@@ -1,38 +1,38 @@
 [
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/layout_activity_blog_detail.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/layout/activity_blog_detail.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/layout_item_blog.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/layout/item_blog.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/layout_item_blog.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/layout/item_blog.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/layout_activity_blog_detail.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/layout/activity_blog_detail.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/layout_activity_test_storage.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/layout/activity_test_storage.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/layout_activity_test_storage.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/layout/activity_test_storage.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/layout_activity_edit_post.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/layout/activity_edit_post.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/xml_backup_rules.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/xml/backup_rules.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/xml_backup_rules.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/xml/backup_rules.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/menu_menu_main.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/menu/menu_main.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/menu_menu_main.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/menu/menu_main.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/layout_activity_main.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/layout/activity_main.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/layout_activity_git_manager.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/layout/activity_git_manager.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/layout_activity_git_manager.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/layout/activity_git_manager.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/xml_data_extraction_rules.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/xml/data_extraction_rules.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/xml_data_extraction_rules.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "com.example.hexobloguploader.app-debug-50:/layout_activity_main.xml.flat",
-        "source": "com.example.hexobloguploader.app-main-52:/layout/activity_main.xml"
+        "merged": "com.example.hexobloguploader.app-debug-53:/layout_activity_edit_post.xml.flat",
+        "source": "com.example.hexobloguploader.app-main-55:/layout/activity_edit_post.xml"
     }
 ]
