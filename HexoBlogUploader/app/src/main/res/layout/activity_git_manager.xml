@@ -155,8 +155,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="拉取更新"
-            android:layout_marginEnd="4dp"
-            android:enabled="false" />
+            android:layout_marginEnd="4dp" />
 
         <Button
             android:id="@+id/buttonCommitPush"
@@ -165,8 +164,7 @@
             android:layout_weight="1"
             android:text="提交推送"
             android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
-            android:enabled="false" />
+            android:layout_marginEnd="4dp" />
 
         <Button
             android:id="@+id/buttonResetChanges"
@@ -174,8 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="重置更改"
-            android:layout_marginStart="4dp"
-            android:enabled="false" />
+            android:layout_marginStart="4dp" />
 
     </LinearLayout>
 

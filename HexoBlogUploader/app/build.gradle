@@ -55,6 +55,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     
+    // 协程支持
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    
     // JGit 库（用于 Git 操作）
     implementation 'org.eclipse.jgit:org.eclipse.jgit:6.7.0.202309050840-r'
     // Markdown 渲染库（用于预览）

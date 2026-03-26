@@ -4,18 +4,31 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hexobloguploader.databinding.ActivityGitManagerBinding
+import com.example.hexobloguploader.git.GitOperationsManager
+import com.example.hexobloguploader.git.SimpleProgressMonitor
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
- * 简化的 Git 仓库管理界面
+ * Git 仓库管理界面
  * 用于克隆、更新、提交 Hexo 博客仓库
  */
 class SimpleGitManagerActivity : AppCompatActivity() {
     private lateinit var binding: ActivityGitManagerBinding
+    private lateinit var gitManager: GitOperationsManager
+    
+    // 测试用的仓库URL和Token（实际使用时应该从设置或输入框获取）
+    private val testRepoUrl = "https://github.com/your-username/your-hexo-blog.git"
+    private val testToken = "ghp_your_personal_access_token_here"
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityGitManagerBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        
+        gitManager = GitOperationsManager(this)
         
         setupToolbar()
         setupButtons()
@@ -59,89 +72,190 @@ class SimpleGitManagerActivity : AppCompatActivity() {
         binding.buttonCloneMyBlog.setOnClickListener {
             cloneMyBlogRepository()
         }
+        
+        // 启用按钮
+        binding.buttonPullUpdates.isEnabled = true
+        binding.buttonCommitPush.isEnabled = true
+        binding.buttonResetChanges.isEnabled = true
     }
     
     private fun checkRepositoryStatus() {
         appendLog("🔍 检查仓库状态...")
-        appendLog("✅ 仓库状态检查功能")
-        appendLog("   分支: main")
-        appendLog("   最后提交: 初始化提交")
-        appendLog("   更改文件: 0 个")
         
-        binding.textRepositoryInfo.text = """
-            📁 仓库信息:
+        CoroutineScope(Dispatchers.IO).launch {
+            val status = gitManager.checkRepositoryStatus()
             
-            本地路径: /storage/emulated/0/HexoBlog
-            Git目录: ✅ 存在
-            Git路径: /storage/emulated/0/HexoBlog/.git
-            
-            文章数量: 3
-            存储大小: 15.2 KB
-            
-            状态: ✅ 已初始化
-        """.trimIndent()
+            withContext(Dispatchers.Main) {
+                if (status.isInitialized) {
+                    appendLog("✅ 仓库状态:")
+                    appendLog("   分支: ${status.branch ?: "未知"}")
+                    appendLog("   最后提交: ${status.lastCommitMessage ?: "无"}")
+                    appendLog("   作者: ${status.lastCommitAuthor ?: "未知"}")
+                    appendLog("   时间: ${status.lastCommitDate?.toString() ?: "未知"}")
+                    appendLog("   更改文件: ${status.getChangeCount()} 个")
+                    
+                    if (status.addedFiles.isNotEmpty()) {
+                        appendLog("   新增: ${status.addedFiles.size}")
+                    }
+                    if (status.modifiedFiles.isNotEmpty()) {
+                        appendLog("   修改: ${status.modifiedFiles.size}")
+                    }
+                    if (status.untrackedFiles.isNotEmpty()) {
+                        appendLog("   未跟踪: ${status.untrackedFiles.size}")
+                    }
+                    
+                    // 更新仓库信息
+                    updateRepositoryInfo()
+                } else {
+                    appendLog("❌ 仓库未初始化")
+                    appendLog("   错误: ${status.error ?: "未知错误"}")
+                }
+            }
+        }
     }
     
     private fun showCloneDialog() {
         appendLog("🚀 开始克隆仓库...")
-        appendLog("   仓库: https://github.com/your-username/your-hexo-blog.git")
-        appendLog("   分支: main")
-        appendLog("✅ 克隆功能已准备就绪")
-    }
-    
-    private fun cloneRepository(repoUrl: String, token: String) {
-        appendLog("🔑 使用 Token 克隆仓库...")
-        appendLog("✅ 仓库克隆成功")
-        appendLog("   路径: /storage/emulated/0/HexoBlog")
+        appendLog("   仓库: $testRepoUrl")
+        appendLog("   分支: ${GitOperationsManager.DEFAULT_BRANCH}")
         
-        binding.textProgress.text = "克隆完成"
-        binding.progressBar.progress = 100
+        // 创建进度监视器
+        val progressMonitor = SimpleProgressMonitor("克隆进度") { message, progress ->
+            binding.textProgress.text = message
+            binding.progressBar.progress = progress
+        }
         
-        Toast.makeText(this, "博客仓库克隆成功", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = gitManager.cloneRepository(testRepoUrl, testToken, progressMonitor = progressMonitor)
+            
+            withContext(Dispatchers.Main) {
+                if (result.success) {
+                    appendLog("✅ 仓库克隆成功")
+                    appendLog("   路径: ${result.details}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "博客仓库克隆成功", Toast.LENGTH_SHORT).show()
+                    
+                    // 更新仓库信息
+                    updateRepositoryInfo()
+                } else {
+                    appendLog("❌ 仓库克隆失败")
+                    appendLog("   错误: ${result.message}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "克隆失败: ${result.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
     
     private fun pullUpdates() {
         appendLog("⬇️ 开始拉取更新...")
-        appendLog("✅ 更新拉取成功")
         
-        binding.textProgress.text = "拉取完成"
-        binding.progressBar.progress = 100
+        // 创建进度监视器
+        val progressMonitor = SimpleProgressMonitor("拉取进度") { message, progress ->
+            binding.textProgress.text = message
+            binding.progressBar.progress = progress
+        }
         
-        Toast.makeText(this, "更新拉取成功", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = gitManager.pullUpdates(testToken, progressMonitor)
+            
+            withContext(Dispatchers.Main) {
+                if (result.success) {
+                    appendLog("✅ 更新拉取成功")
+                    appendLog("   路径: ${result.details}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "更新拉取成功", Toast.LENGTH_SHORT).show()
+                    
+                    // 更新仓库信息
+                    updateRepositoryInfo()
+                } else {
+                    appendLog("❌ 更新拉取失败")
+                    appendLog("   错误: ${result.message}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "拉取失败: ${result.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
     
     private fun showCommitDialog() {
         val commitMessage = "更新博客文章 - ${java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(java.util.Date())}"
-        commitAndPush(commitMessage, "test-token")
+        commitAndPush(commitMessage, testToken)
     }
     
     private fun commitAndPush(message: String, token: String) {
         appendLog("💾 开始提交并推送...")
         appendLog("   提交信息: $message")
-        appendLog("✅ 提交并推送成功")
-        appendLog("   提交ID: abc123def456")
         
-        binding.textProgress.text = "提交完成"
-        
-        Toast.makeText(this, "提交并推送成功", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = gitManager.commitAndPush(message, token)
+            
+            withContext(Dispatchers.Main) {
+                if (result.success) {
+                    appendLog("✅ 提交并推送成功")
+                    appendLog("   提交ID: ${result.details}")
+                    binding.textProgress.text = "提交完成"
+                    Toast.makeText(this@SimpleGitManagerActivity, "提交并推送成功", Toast.LENGTH_SHORT).show()
+                    
+                    // 更新仓库信息
+                    updateRepositoryInfo()
+                } else {
+                    appendLog("❌ 提交失败")
+                    appendLog("   错误: ${result.message}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "提交失败: ${result.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
     
     private fun resetChanges() {
         appendLog("↩️ 开始重置更改...")
-        appendLog("✅ 重置成功")
-        appendLog("   重置类型: 软重置")
         
-        binding.textProgress.text = "重置完成"
-        
-        Toast.makeText(this, "重置成功", Toast.LENGTH_SHORT).show()
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = gitManager.resetChanges()
+            
+            withContext(Dispatchers.Main) {
+                if (result.success) {
+                    appendLog("✅ 重置成功")
+                    appendLog("   重置类型: ${result.details}")
+                    binding.textProgress.text = "重置完成"
+                    Toast.makeText(this@SimpleGitManagerActivity, "重置成功", Toast.LENGTH_SHORT).show()
+                    
+                    // 更新仓库信息
+                    updateRepositoryInfo()
+                } else {
+                    appendLog("❌ 重置失败")
+                    appendLog("   错误: ${result.message}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "重置失败: ${result.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
     
     private fun testCloneRepository() {
         appendLog("🧪 开始测试克隆...")
         appendLog("   使用测试仓库URL和Token")
-        appendLog("✅ 测试克隆成功")
         
-        cloneRepository("https://github.com/octocat/Hello-World.git", "")
+        // 这里可以使用一个公开的测试仓库
+        val testRepo = "https://github.com/octocat/Hello-World.git"
+        val testToken = "" // 公开仓库不需要Token
+        
+        // 创建进度监视器
+        val progressMonitor = SimpleProgressMonitor("测试克隆进度") { message, progress ->
+            binding.textProgress.text = message
+            binding.progressBar.progress = progress
+        }
+        
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = gitManager.cloneRepository(testRepo, testToken, progressMonitor = progressMonitor)
+            
+            withContext(Dispatchers.Main) {
+                if (result.success) {
+                    appendLog("✅ 测试克隆成功")
+                    Toast.makeText(this@SimpleGitManagerActivity, "测试克隆成功", Toast.LENGTH_SHORT).show()
+                } else {
+                    appendLog("❌ 测试克隆失败")
+                    appendLog("   错误: ${result.message}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "测试克隆失败: ${result.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
     
     private fun cloneMyBlogRepository() {
@@ -151,27 +265,76 @@ class SimpleGitManagerActivity : AppCompatActivity() {
         appendLog("   2. SSH + 密钥（需要配置 SSH 密钥）")
         appendLog("✅ 使用 HTTPS 协议克隆...")
         
+        // HTTPS 地址
         val httpsRepoUrl = "https://github.com/hongming351/hongming351.github.io.git"
         appendLog("   仓库: $httpsRepoUrl")
-        appendLog("   分支: main")
+        appendLog("   分支: ${GitOperationsManager.DEFAULT_BRANCH}")
         appendLog("   需要: GitHub Personal Access Token")
         
-        cloneRepository(httpsRepoUrl, "ghp_your_personal_access_token_here")
+        // 这里应该从设置中获取Token，或者让用户输入
+        val token = "ghp_your_personal_access_token_here"
+        
+        if (token.isEmpty() || !token.startsWith("ghp_")) {
+            appendLog("❌ 请提供有效的 GitHub Personal Access Token")
+            appendLog("💡 如何获取 Token:")
+            appendLog("   1. 访问: https://github.com/settings/tokens")
+            appendLog("   2. 点击 'Generate new token'")
+            appendLog("   3. 选择 'repo' 权限")
+            appendLog("   4. 复制以 'ghp_' 开头的 Token")
+            return
+        }
+        
+        // 创建进度监视器
+        val progressMonitor = SimpleProgressMonitor("克隆进度") { message, progress ->
+            binding.textProgress.text = message
+            binding.progressBar.progress = progress
+        }
+        
+        // 使用 HTTPS 协议克隆
+        CoroutineScope(Dispatchers.IO).launch {
+            val result = gitManager.cloneRepository(
+                repoUrl = httpsRepoUrl,
+                authToken = token,
+                progressMonitor = progressMonitor
+            )
+            
+            withContext(Dispatchers.Main) {
+                if (result.success) {
+                    appendLog("✅ 博客仓库克隆成功")
+                    appendLog("   路径: ${result.details}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "博客仓库克隆成功", Toast.LENGTH_SHORT).show()
+                    
+                    // 更新仓库信息
+                    updateRepositoryInfo()
+                } else {
+                    appendLog("❌ 博客仓库克隆失败")
+                    appendLog("   错误: ${result.message}")
+                    Toast.makeText(this@SimpleGitManagerActivity, "博客仓库克隆失败: ${result.message}", Toast.LENGTH_LONG).show()
+                }
+            }
+        }
     }
     
     private fun updateRepositoryInfo() {
-        binding.textRepositoryInfo.text = """
-            📁 仓库信息:
+        CoroutineScope(Dispatchers.IO).launch {
+            val repoInfo = gitManager.getRepositoryInfo()
+            val isInitialized = gitManager.isRepositoryInitialized()
             
-            本地路径: /storage/emulated/0/HexoBlog
-            Git目录: ✅ 存在
-            Git路径: /storage/emulated/0/HexoBlog/.git
-            
-            文章数量: 3
-            存储大小: 15.2 KB
-            
-            状态: ✅ 已初始化
-        """.trimIndent()
+            withContext(Dispatchers.Main) {
+                binding.textRepositoryInfo.text = """
+                    📁 仓库信息:
+                    
+                    本地路径: ${repoInfo.localPath}
+                    Git目录: ${if (repoInfo.gitDirExists) "✅ 存在" else "❌ 不存在"}
+                    Git路径: ${repoInfo.gitDirPath}
+                    
+                    文章数量: ${repoInfo.storageInfo.postCount}
+                    存储大小: ${repoInfo.storageInfo.getFormattedSize()}
+                    
+                    状态: ${if (isInitialized) "✅ 已初始化" else "❌ 未初始化"}
+                """.trimIndent()
+            }
+        }
     }
     
     private fun appendLog(message: String) {
