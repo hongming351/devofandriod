@@ -1,6 +1,7 @@
 package com.example.hexobloguploader
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.hexobloguploader.databinding.ActivityMainBinding
@@ -13,22 +14,35 @@ class MainActivity : AppCompatActivity() {
     
     companion object {
         private const val REQUEST_EDIT_POST = 1001
+        private const val TAG = "MainActivity"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        
+        try {
+            Log.d(TAG, "MainActivity onCreate started")
+            
+            binding = ActivityMainBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = "Hexo 博客上传器"
+            setSupportActionBar(binding.toolbar)
+            supportActionBar?.title = "Hexo 博客上传器"
 
-        storageManager = BlogStorageManager(this)
+            storageManager = BlogStorageManager(this)
 
-        setupRecyclerView()
-        setupFab()
-        setupMenu()
-        loadBlogs()
+            setupRecyclerView()
+            setupFab()
+            setupMenu()
+            loadBlogs()
+            
+            Log.d(TAG, "MainActivity onCreate completed successfully")
+        } catch (e: Exception) {
+            Log.e(TAG, "Error in MainActivity onCreate: ${e.message}", e)
+            showToast("应用启动失败: ${e.message}")
+            // 显示错误界面
+            updateEmptyState(true)
+        }
     }
     
     private fun setupToolbar() {

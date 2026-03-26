@@ -11,124 +11,126 @@
 11    <uses-permission android:name="android.permission.INTERNET" />
 11-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:5:5-67
 11-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:5:22-64
-12    <!-- 如果需要访问外部存储 -->
-13    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-13-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:7:5-80
-13-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:7:22-77
-14    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-14-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:5-81
-14-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:22-78
-15
-16    <permission
-16-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
-17        android:name="com.example.hexobloguploader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-17-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
-18        android:protectionLevel="signature" />
-18-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
-19
-20    <uses-permission android:name="com.example.hexobloguploader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-20-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
-20-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
-21
-22    <application
-22-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:10:5-64:19
-23        android:allowBackup="true"
-23-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:11:9-35
-24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-24-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
-25        android:dataExtractionRules="@xml/data_extraction_rules"
-25-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:12:9-65
-26        android:debuggable="true"
-27        android:extractNativeLibs="true"
-28        android:fullBackupContent="@xml/backup_rules"
-28-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:13:9-54
-29        android:icon="@android:drawable/sym_def_app_icon"
-29-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:14:9-58
-30        android:label="@string/app_name"
-30-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:15:9-41
-31        android:roundIcon="@android:drawable/sym_def_app_icon"
-31-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:16:9-63
-32        android:supportsRtl="true"
-32-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:17:9-35
-33        android:testOnly="true"
+12    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+12-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:6:5-79
+12-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:6:22-76
+13    <!-- 如果需要访问外部存储 -->
+14    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+14-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:5-80
+14-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:22-77
+15    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+15-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:9:5-81
+15-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:9:22-78
+16
+17    <permission
+17-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+18        android:name="com.example.hexobloguploader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+18-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+19        android:protectionLevel="signature" />
+19-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+20
+21    <uses-permission android:name="com.example.hexobloguploader.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+21-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+21-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+22
+23    <application
+23-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:11:5-65:19
+24        android:allowBackup="true"
+24-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:12:9-35
+25        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+25-->[androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+26        android:dataExtractionRules="@xml/data_extraction_rules"
+26-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:13:9-65
+27        android:debuggable="true"
+28        android:extractNativeLibs="true"
+29        android:fullBackupContent="@xml/backup_rules"
+29-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:14:9-54
+30        android:icon="@android:drawable/sym_def_app_icon"
+30-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:15:9-58
+31        android:label="@string/app_name"
+31-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:16:9-41
+32        android:roundIcon="@android:drawable/sym_def_app_icon"
+32-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:17:9-63
+33        android:supportsRtl="true"
+33-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:18:9-35
 34        android:theme="@style/Theme.HexoBlogUploader" >
-34-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:18:9-54
+34-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:19:9-54
 35        <activity
-35-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:20:9-27:20
+35-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:21:9-28:20
 36            android:name="com.example.hexobloguploader.MainActivity"
-36-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:21:13-41
+36-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:22:13-41
 37            android:exported="true" >
-37-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:22:13-36
+37-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:23:13-36
 38            <intent-filter>
-38-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:23:13-26:29
+38-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:24:13-27:29
 39                <action android:name="android.intent.action.MAIN" />
-39-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:24:17-69
-39-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:24:25-66
+39-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:17-69
+39-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:25-66
 40
 41                <category android:name="android.intent.category.LAUNCHER" />
-41-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:17-77
-41-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:27-74
+41-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:26:17-77
+41-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:26:27-74
 42            </intent-filter>
 43        </activity>
 44        <activity
-44-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:29:9-36:20
+44-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:30:9-37:20
 45            android:name="com.example.hexobloguploader.BlogDetailActivity"
-45-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:30:13-47
+45-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:31:13-47
 46            android:exported="false"
-46-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:31:13-37
+46-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:32:13-37
 47            android:parentActivityName="com.example.hexobloguploader.MainActivity" >
-47-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:32:13-55
+47-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:33:13-55
 48            <meta-data
-48-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:33:13-35:49
+48-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:13-36:49
 49                android:name="android.support.PARENT_ACTIVITY"
-49-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:17-63
+49-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-63
 50                android:value=".MainActivity" />
-50-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-46
+50-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:36:17-46
 51        </activity>
 52        <activity
-52-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:38:9-45:20
+52-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:39:9-46:20
 53            android:name="com.example.hexobloguploader.TestStorageActivity"
-53-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:39:13-48
+53-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:40:13-48
 54            android:exported="false"
-54-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:40:13-37
+54-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:41:13-37
 55            android:parentActivityName="com.example.hexobloguploader.MainActivity" >
-55-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:41:13-55
+55-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:42:13-55
 56            <meta-data
-56-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:33:13-35:49
+56-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:13-36:49
 57                android:name="android.support.PARENT_ACTIVITY"
-57-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:17-63
+57-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-63
 58                android:value=".MainActivity" />
-58-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-46
+58-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:36:17-46
 59        </activity>
 60        <activity
-60-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:47:9-54:20
-61            android:name="com.example.hexobloguploader.GitManagerActivity"
-61-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:48:13-47
+60-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:48:9-55:20
+61            android:name="com.example.hexobloguploader.SimpleGitManagerActivity"
+61-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:49:13-53
 62            android:exported="false"
-62-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:49:13-37
+62-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:50:13-37
 63            android:parentActivityName="com.example.hexobloguploader.MainActivity" >
-63-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:50:13-55
+63-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:51:13-55
 64            <meta-data
-64-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:33:13-35:49
+64-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:13-36:49
 65                android:name="android.support.PARENT_ACTIVITY"
-65-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:17-63
+65-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-63
 66                android:value=".MainActivity" />
-66-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-46
+66-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:36:17-46
 67        </activity>
 68        <activity
-68-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:56:9-63:20
+68-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:57:9-64:20
 69            android:name="com.example.hexobloguploader.EditPostActivity"
-69-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:57:13-45
+69-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:58:13-45
 70            android:exported="false"
-70-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:58:13-37
+70-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:59:13-37
 71            android:parentActivityName="com.example.hexobloguploader.MainActivity" >
-71-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:59:13-55
+71-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:60:13-55
 72            <meta-data
-72-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:33:13-35:49
+72-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:13-36:49
 73                android:name="android.support.PARENT_ACTIVITY"
-73-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:17-63
+73-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-63
 74                android:value=".MainActivity" />
-74-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-46
+74-->D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:36:17-46
 75        </activity>
 76
 77        <provider

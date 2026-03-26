@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-66:12
-INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-66:12
-INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-66:12
-INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-66:12
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-67:12
+INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-67:12
+INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-67:12
+INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:2:1-67:12
 MERGED from [androidx.databinding:viewbinding:8.3.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\c4e9cbaf33058ef03ffd560072e4ed9c\transformed\viewbinding-8.3.0\AndroidManifest.xml:2:1-7:12
 MERGED from [androidx.navigation:navigation-common:2.7.7] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\4e99ce6899c20bfdbc140bb0936c3208\transformed\navigation-common-2.7.7\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.navigation:navigation-common-ktx:2.7.7] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\7646a0c2b14fd38d7404b57c5156f35c\transformed\navigation-common-ktx-2.7.7\AndroidManifest.xml:2:1-7:12
@@ -80,19 +80,23 @@ uses-permission#android.permission.INTERNET
 ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:5:5-67
 	android:name
 		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:5:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:6:5-79
+	android:name
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:6:22-76
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:7:5-80
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:5-80
 MERGED from [com.github.angads25:filepicker:1.1.1] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\44b858ebbc3943d0255b28f5c5b8f5bf\transformed\filepicker-1.1.1\AndroidManifest.xml:11:5-80
 MERGED from [com.github.angads25:filepicker:1.1.1] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\44b858ebbc3943d0255b28f5c5b8f5bf\transformed\filepicker-1.1.1\AndroidManifest.xml:11:5-80
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:7:22-77
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:22-77
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:5-81
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:9:5-81
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:8:22-78
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:9:22-78
 application
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:10:5-64:19
-INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:10:5-64:19
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:11:5-65:19
+INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:11:5-65:19
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\e7b3dbe09ad4dfce76c428138a926fda\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [com.google.android.material:material:1.11.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\e7b3dbe09ad4dfce76c428138a926fda\transformed\material-1.11.0\AndroidManifest.xml:22:5-20
 MERGED from [androidx.constraintlayout:constraintlayout:2.1.4] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\f18b6f77c7d254f0eb6b29401e522f25\transformed\constraintlayout-2.1.4\AndroidManifest.xml:9:5-20
@@ -116,77 +120,77 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\34955\.gradle\cach
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\34955\.gradle\caches\9.0-milestone-1\transforms\75ebd15479060c435f3cb58508cb8c94\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:17:9-35
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:18:9-35
 	android:label
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:15:9-41
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:16:9-41
 	android:fullBackupContent
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:13:9-54
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:14:9-54
 	android:roundIcon
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:16:9-63
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:17:9-63
 	tools:targetApi
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:19:9-29
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:20:9-29
 	android:icon
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:14:9-58
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:15:9-58
 	android:allowBackup
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:11:9-35
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:12:9-35
 	android:theme
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:18:9-54
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:19:9-54
 	android:dataExtractionRules
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:12:9-65
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:13:9-65
 activity#com.example.hexobloguploader.MainActivity
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:20:9-27:20
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:21:9-28:20
 	android:exported
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:22:13-36
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:23:13-36
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:21:13-41
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:22:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:23:13-26:29
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:24:13-27:29
 action#android.intent.action.MAIN
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:24:17-69
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:17-69
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:24:25-66
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:17-77
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:26:17-77
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:25:27-74
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:26:27-74
 activity#com.example.hexobloguploader.BlogDetailActivity
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:29:9-36:20
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:30:9-37:20
 	android:parentActivityName
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:32:13-55
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:33:13-55
 	android:exported
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:31:13-37
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:32:13-37
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:30:13-47
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:31:13-47
 meta-data#android.support.PARENT_ACTIVITY
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:33:13-35:49
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:13-36:49
 	android:value
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-46
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:36:17-46
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:34:17-63
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:35:17-63
 activity#com.example.hexobloguploader.TestStorageActivity
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:38:9-45:20
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:39:9-46:20
 	android:parentActivityName
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:41:13-55
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:42:13-55
 	android:exported
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:40:13-37
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:41:13-37
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:39:13-48
-activity#com.example.hexobloguploader.GitManagerActivity
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:47:9-54:20
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:40:13-48
+activity#com.example.hexobloguploader.SimpleGitManagerActivity
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:48:9-55:20
 	android:parentActivityName
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:50:13-55
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:51:13-55
 	android:exported
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:49:13-37
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:50:13-37
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:48:13-47
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:49:13-53
 activity#com.example.hexobloguploader.EditPostActivity
-ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:56:9-63:20
+ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:57:9-64:20
 	android:parentActivityName
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:59:13-55
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:60:13-55
 	android:exported
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:58:13-37
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:59:13-37
 	android:name
-		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:57:13-45
+		ADDED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml:58:13-45
 uses-sdk
 INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from D:\devofandriod\HexoBlogUploader\app\src\main\AndroidManifest.xml

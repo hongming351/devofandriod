@@ -9,6 +9,7 @@
         android:targetSdkVersion="34" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 如果需要访问外部存储 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -30,7 +31,6 @@
         android:label="@string/app_name"
         android:roundIcon="@android:drawable/sym_def_app_icon"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.HexoBlogUploader" >
         <activity
             android:name="com.example.hexobloguploader.MainActivity"
@@ -58,7 +58,7 @@
                 android:value=".MainActivity" />
         </activity>
         <activity
-            android:name="com.example.hexobloguploader.GitManagerActivity"
+            android:name="com.example.hexobloguploader.SimpleGitManagerActivity"
             android:exported="false"
             android:parentActivityName="com.example.hexobloguploader.MainActivity" >
             <meta-data
