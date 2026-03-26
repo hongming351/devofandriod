@@ -10,6 +10,10 @@ import com.example.hexobloguploader.databinding.ActivityEditPostBinding
 import com.example.hexobloguploader.model.Post
 import com.example.hexobloguploader.storage.BlogStorageManager
 import io.noties.markwon.Markwon
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -249,7 +253,8 @@ categories: []
         if (gitToken.isNotEmpty() && gitToken.startsWith("ghp_")) {
             // 在后台执行 Git 提交
             kotlinx.coroutines.CoroutineScope(kotlinx.coroutines.Dispatchers.IO).launch {
-                val gitManager = com.example.hexobloguploader.git.GitOperationsManager(this@EditPostActivity)
+                // 暂时注释掉Git提交功能
+                // val gitManager = com.example.hexobloguploader.git.GitOperationsManager(this@EditPostActivity)
                 
                 // 生成提交信息
                 val commitMessage = if (isNewPost) {
@@ -258,15 +263,18 @@ categories: []
                     "更新文章: $postTitle"
                 }
                 
-                val result = gitManager.commitAndPush(commitMessage, gitToken, true)
+                // 暂时注释掉Git提交功能
+                // val result = gitManager.commitAndPush(commitMessage, gitToken, true)
                 
                 kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.Main) {
-                    if (result.success) {
-                        Toast.makeText(this@EditPostActivity, "文章已自动提交到 Git", Toast.LENGTH_SHORT).show()
-                    } else {
-                        // 提交失败，但不影响文章保存
-                        Log.w("EditPostActivity", "Git 提交失败: ${result.message}")
-                    }
+                    // 暂时注释掉Git提交功能
+                    // if (result.success) {
+                    //     Toast.makeText(this@EditPostActivity, "文章已自动提交到 Git", Toast.LENGTH_SHORT).show()
+                    // } else {
+                    //     // 提交失败，但不影响文章保存
+                    //     Log.w("EditPostActivity", "Git 提交失败: ${result.message}")
+                    // }
+                    Toast.makeText(this@EditPostActivity, "文章保存成功（Git提交功能暂不可用）", Toast.LENGTH_SHORT).show()
                 }
             }
         }

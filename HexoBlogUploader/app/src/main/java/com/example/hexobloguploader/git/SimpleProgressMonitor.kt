@@ -72,6 +72,11 @@ class SimpleProgressMonitor(
         return false
     }
     
+    override fun showDuration(enabled: Boolean) {
+        // 这个方法在JGit中是可选的，我们不需要实现具体逻辑
+        Log.d(TAG, "showDuration: $enabled")
+    }
+    
     /**
      * 获取当前进度信息
      */

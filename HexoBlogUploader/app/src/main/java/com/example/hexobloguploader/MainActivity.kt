@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_git_manager -> {
                     // 打开 Git 管理界面
-                    val intent = android.content.Intent(this, GitManagerActivity::class.java)
+                    val intent = android.content.Intent(this, SimpleGitManagerActivity::class.java)
                     startActivity(intent)
                     true
                 }
@@ -176,7 +176,16 @@ class MainActivity : AppCompatActivity() {
     
     private fun showBlogDetail(blog: Blog) {
         val intent = android.content.Intent(this, BlogDetailActivity::class.java).apply {
-            putExtra("BLOG_DATA", blog)
+            // 使用Bundle传递数据
+            val bundle = Bundle().apply {
+                putString("id", blog.id)
+                putString("title", blog.title)
+                putString("content", blog.content)
+                putString("date", blog.date)
+                putStringArrayList("tags", ArrayList(blog.tags))
+                putString("filePath", blog.filePath)
+            }
+            putExtra("BLOG_DATA", bundle)
         }
         startActivity(intent)
     }

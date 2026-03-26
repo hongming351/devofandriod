@@ -2,6 +2,7 @@ package com.example.hexobloguploader
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import com.example.hexobloguploader.databinding.ActivityBlogDetailBinding
 
 class BlogDetailActivity : AppCompatActivity() {
@@ -28,17 +29,24 @@ class BlogDetailActivity : AppCompatActivity() {
     
     private fun loadBlogData() {
         // 从 Intent 获取博客数据
-        val blog = intent.getSerializableExtra("BLOG_DATA") as? Blog
+        val bundle = intent.getBundleExtra("BLOG_DATA")
         
-        if (blog != null) {
-            supportActionBar?.title = blog.title
-            binding.textBlogTitle.text = blog.title
-            binding.textBlogDate.text = "发布日期: ${blog.date}"
-            binding.textBlogContent.text = blog.content
+        if (bundle != null) {
+            val id = bundle.getString("id", "")
+            val title = bundle.getString("title", "未命名博客")
+            val content = bundle.getString("content", "")
+            val date = bundle.getString("date", "")
+            val tags = bundle.getStringArrayList("tags") ?: emptyList<String>()
+            val filePath = bundle.getString("filePath", "")
+            
+            supportActionBar?.title = title
+            binding.textBlogTitle.text = title
+            binding.textBlogDate.text = "发布日期: $date"
+            binding.textBlogContent.text = content
             
             // 显示标签
-            binding.textBlogTags.text = "标签: ${blog.tags.joinToString(", ")}"
-            binding.textFilePath.text = "文件路径: ${blog.filePath}"
+            binding.textBlogTags.text = "标签: ${tags.joinToString(", ")}"
+            binding.textFilePath.text = "文件路径: $filePath"
         } else {
             // 如果没有数据，显示示例
             supportActionBar?.title = "博客详情"
@@ -95,6 +103,15 @@ class BlogDetailActivity : AppCompatActivity() {
         android.widget.Toast.makeText(
             this,
             "开始上传",
+            android.widget.Toast.LENGTH_SHORT
+        ).show()
+    }
+    
+    private fun saveBlog() {
+        // 保存博客到本地
+        android.widget.Toast.makeText(
+            this,
+            "保存博客",
             android.widget.Toast.LENGTH_SHORT
         ).show()
     }
