@@ -60,7 +60,7 @@ class TestStorageActivity : AppCompatActivity() {
     private fun createTestPost() {
         val testPost = Post.createNew(
             title = "测试博客文章 ${System.currentTimeMillis() % 1000}",
-            content = """
+            bodyContent = """
                 # 测试博客文章
                 
                 这是一篇测试用的博客文章，用于验证存储功能。

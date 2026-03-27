@@ -101,42 +101,49 @@ class BlogStorageManager(private val context: Context) {
         return if (file.exists()) Post.fromFile(file) else null
     }
     
-    /**
-     * 保存博客文章
-     * @return 保存成功返回true，失败返回false
-     */
-    fun savePost(post: Post): Boolean {
-        return try {
-            // 确保目录存在
-            if (!postsDir.exists()) {
-                postsDir.mkdirs()
+        /**
+         * 保存博客文章
+         * @return 保存成功返回true，失败返回false
+         */
+        fun savePost(post: Post): Boolean {
+            return try {
+                // 确保目录存在
+                if (!postsDir.exists()) {
+                    postsDir.mkdirs()
+                }
+                
+                // 确定文件名
+                val fileName = if (post.fileName.isNotEmpty()) {
+                    post.fileName
+                } else {
+                    // 从日期字符串中提取日期部分（yyyy-MM-dd）
+                    val datePart = post.date.substring(0, 10)
+                    val safeTitle = post.title
+                        .replace(" ", "-")
+                        .replace("[^a-zA-Z0-9\\-]".toRegex(), "")
+                        .lowercase()
+                        .take(50)
+                    "$datePart-$safeTitle.md"
+                }
+                
+                // 创建文件
+                val file = File(postsDir, fileName)
+                
+                // 生成Markdown内容
+                val content = Post.generateMarkdownContent(post)
+                
+                // 写入文件
+                file.writeText(content)
+                
+                true
+            } catch (e: IOException) {
+                e.printStackTrace()
+                false
+            } catch (e: SecurityException) {
+                e.printStackTrace()
+                false
             }
-            
-            // 确定文件名
-            val fileName = if (post.fileName.isNotEmpty()) {
-                post.fileName
-            } else {
-                "${post.date}-${post.title.replace(" ", "-").replace("[^a-zA-Z0-9-]".toRegex(), "").lowercase()}.md"
-            }
-            
-            // 创建文件
-            val file = File(postsDir, fileName)
-            
-            // 生成Markdown内容
-            val content = Post.generateMarkdownContent(post.copy(fileName = fileName))
-            
-            // 写入文件
-            file.writeText(content)
-            
-            true
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        } catch (e: SecurityException) {
-            e.printStackTrace()
-            false
         }
-    }
     
     /**
      * 更新博客文章

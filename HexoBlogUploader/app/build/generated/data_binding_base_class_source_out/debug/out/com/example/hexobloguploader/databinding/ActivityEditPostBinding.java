@@ -27,10 +27,16 @@ public final class ActivityEditPostBinding implements ViewBinding {
   public final Button buttonDelete;
 
   @NonNull
+  public final Button buttonInsertBold;
+
+  @NonNull
   public final Button buttonInsertCode;
 
   @NonNull
   public final Button buttonInsertImage;
+
+  @NonNull
+  public final Button buttonInsertItalic;
 
   @NonNull
   public final Button buttonInsertLink;
@@ -69,7 +75,8 @@ public final class ActivityEditPostBinding implements ViewBinding {
   public final Toolbar toolbar;
 
   private ActivityEditPostBinding(@NonNull LinearLayout rootView, @NonNull Button buttonDelete,
-      @NonNull Button buttonInsertCode, @NonNull Button buttonInsertImage,
+      @NonNull Button buttonInsertBold, @NonNull Button buttonInsertCode,
+      @NonNull Button buttonInsertImage, @NonNull Button buttonInsertItalic,
       @NonNull Button buttonInsertLink, @NonNull Button buttonPreview, @NonNull Button buttonSave,
       @NonNull EditText editTextCategories, @NonNull EditText editTextContent,
       @NonNull EditText editTextTags, @NonNull EditText editTextTitle,
@@ -77,8 +84,10 @@ public final class ActivityEditPostBinding implements ViewBinding {
       @NonNull TextView textPreview, @NonNull TextView textStats, @NonNull Toolbar toolbar) {
     this.rootView = rootView;
     this.buttonDelete = buttonDelete;
+    this.buttonInsertBold = buttonInsertBold;
     this.buttonInsertCode = buttonInsertCode;
     this.buttonInsertImage = buttonInsertImage;
+    this.buttonInsertItalic = buttonInsertItalic;
     this.buttonInsertLink = buttonInsertLink;
     this.buttonPreview = buttonPreview;
     this.buttonSave = buttonSave;
@@ -126,6 +135,12 @@ public final class ActivityEditPostBinding implements ViewBinding {
         break missingId;
       }
 
+      id = R.id.buttonInsertBold;
+      Button buttonInsertBold = ViewBindings.findChildViewById(rootView, id);
+      if (buttonInsertBold == null) {
+        break missingId;
+      }
+
       id = R.id.buttonInsertCode;
       Button buttonInsertCode = ViewBindings.findChildViewById(rootView, id);
       if (buttonInsertCode == null) {
@@ -135,6 +150,12 @@ public final class ActivityEditPostBinding implements ViewBinding {
       id = R.id.buttonInsertImage;
       Button buttonInsertImage = ViewBindings.findChildViewById(rootView, id);
       if (buttonInsertImage == null) {
+        break missingId;
+      }
+
+      id = R.id.buttonInsertItalic;
+      Button buttonInsertItalic = ViewBindings.findChildViewById(rootView, id);
+      if (buttonInsertItalic == null) {
         break missingId;
       }
 
@@ -210,10 +231,10 @@ public final class ActivityEditPostBinding implements ViewBinding {
         break missingId;
       }
 
-      return new ActivityEditPostBinding((LinearLayout) rootView, buttonDelete, buttonInsertCode,
-          buttonInsertImage, buttonInsertLink, buttonPreview, buttonSave, editTextCategories,
-          editTextContent, editTextTags, editTextTitle, scrollViewEdit, scrollViewPreview,
-          textPreview, textStats, toolbar);
+      return new ActivityEditPostBinding((LinearLayout) rootView, buttonDelete, buttonInsertBold,
+          buttonInsertCode, buttonInsertImage, buttonInsertItalic, buttonInsertLink, buttonPreview,
+          buttonSave, editTextCategories, editTextContent, editTextTags, editTextTitle,
+          scrollViewEdit, scrollViewPreview, textPreview, textStats, toolbar);
     }
     String missingId = rootView.getResources().getResourceName(id);
     throw new NullPointerException("Missing required view with ID: ".concat(missingId));

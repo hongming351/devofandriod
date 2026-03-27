@@ -52,17 +52,26 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test:rules:1.4.0'
+    androidTestImplementation 'androidx.test:core:1.4.0'
+    androidTestImplementation 'androidx.test:core-ktx:1.4.0'
     
     // 协程支持
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
     
     // JGit 库（用于 Git 操作）
     implementation 'org.eclipse.jgit:org.eclipse.jgit:6.7.0.202309050840-r'
+    // JSch 库（用于 SSH 支持）
+    implementation 'com.jcraft:jsch:0.1.55'
     // Markdown 渲染库（用于预览）
     implementation 'io.noties.markwon:editor:4.6.2'
     implementation 'io.noties.markwon:core:4.6.2'
+    // YAML 解析库（用于 Front-matter 解析）
+    implementation 'org.yaml:snakeyaml:2.2'
     // 可选：文件选择器（用于选择图片等）
     implementation 'com.github.angads25:filepicker:1.1.1'
 }

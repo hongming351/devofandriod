@@ -112,36 +112,82 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="4dp"
-                android:background="?android:attr/colorBackground"
-                android:layout_marginBottom="8dp">
+                android:padding="8dp"
+                android:background="?attr/colorPrimarySurface"
+                android:layout_marginBottom="12dp"
+                android:gravity="center_vertical">
+                
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="格式:"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp" />
                 
                 <Button
                     android:id="@+id/buttonInsertImage"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="插入图片"
+                    android:layout_height="36dp"
+                    android:text="图片"
                     android:drawableStart="@android:drawable/ic_menu_gallery"
                     android:drawablePadding="4dp"
-                    style="?android:attr/borderlessButtonStyle" />
+                    android:background="@drawable/button_markdown_toolbar"
+                    android:textColor="?attr/colorOnPrimarySurface"
+                    android:layout_marginEnd="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
                     
                 <Button
                     android:id="@+id/buttonInsertLink"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="插入链接"
+                    android:layout_height="36dp"
+                    android:text="链接"
                     android:drawableStart="@android:drawable/ic_menu_share"
                     android:drawablePadding="4dp"
-                    style="?android:attr/borderlessButtonStyle" />
+                    android:background="@drawable/button_markdown_toolbar"
+                    android:textColor="?attr/colorOnPrimarySurface"
+                    android:layout_marginEnd="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
                     
                 <Button
                     android:id="@+id/buttonInsertCode"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="插入代码"
+                    android:layout_height="36dp"
+                    android:text="代码"
                     android:drawableStart="@android:drawable/ic_menu_edit"
                     android:drawablePadding="4dp"
-                    style="?android:attr/borderlessButtonStyle" />
+                    android:background="@drawable/button_markdown_toolbar"
+                    android:textColor="?attr/colorOnPrimarySurface"
+                    android:layout_marginEnd="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
+                    
+                <Button
+                    android:id="@+id/buttonInsertBold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="粗体"
+                    android:drawableStart="@android:drawable/ic_menu_edit"
+                    android:drawablePadding="4dp"
+                    android:background="@drawable/button_markdown_toolbar"
+                    android:textColor="?attr/colorOnPrimarySurface"
+                    android:layout_marginEnd="4dp"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
+                    
+                <Button
+                    android:id="@+id/buttonInsertItalic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="斜体"
+                    android:drawableStart="@android:drawable/ic_menu_edit"
+                    android:drawablePadding="4dp"
+                    android:background="@drawable/button_markdown_toolbar"
+                    android:textColor="?attr/colorOnPrimarySurface"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
                     
             </LinearLayout>
 

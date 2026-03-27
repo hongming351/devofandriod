@@ -4,10 +4,10 @@ package com.example.hexobloguploader.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewbinding.ViewBinding;
@@ -23,13 +23,13 @@ public final class ActivityBlogDetailBinding implements ViewBinding {
   private final CoordinatorLayout rootView;
 
   @NonNull
-  public final Button buttonEdit;
+  public final AppCompatButton buttonEdit;
 
   @NonNull
-  public final Button buttonPreview;
+  public final AppCompatButton buttonPreview;
 
   @NonNull
-  public final Button buttonUpload;
+  public final AppCompatButton buttonUpload;
 
   @NonNull
   public final FloatingActionButton fabSave;
@@ -52,11 +52,12 @@ public final class ActivityBlogDetailBinding implements ViewBinding {
   @NonNull
   public final Toolbar toolbar;
 
-  private ActivityBlogDetailBinding(@NonNull CoordinatorLayout rootView, @NonNull Button buttonEdit,
-      @NonNull Button buttonPreview, @NonNull Button buttonUpload,
-      @NonNull FloatingActionButton fabSave, @NonNull TextView textBlogContent,
-      @NonNull TextView textBlogDate, @NonNull TextView textBlogTags,
-      @NonNull TextView textBlogTitle, @NonNull TextView textFilePath, @NonNull Toolbar toolbar) {
+  private ActivityBlogDetailBinding(@NonNull CoordinatorLayout rootView,
+      @NonNull AppCompatButton buttonEdit, @NonNull AppCompatButton buttonPreview,
+      @NonNull AppCompatButton buttonUpload, @NonNull FloatingActionButton fabSave,
+      @NonNull TextView textBlogContent, @NonNull TextView textBlogDate,
+      @NonNull TextView textBlogTags, @NonNull TextView textBlogTitle,
+      @NonNull TextView textFilePath, @NonNull Toolbar toolbar) {
     this.rootView = rootView;
     this.buttonEdit = buttonEdit;
     this.buttonPreview = buttonPreview;
@@ -98,19 +99,19 @@ public final class ActivityBlogDetailBinding implements ViewBinding {
     int id;
     missingId: {
       id = R.id.buttonEdit;
-      Button buttonEdit = ViewBindings.findChildViewById(rootView, id);
+      AppCompatButton buttonEdit = ViewBindings.findChildViewById(rootView, id);
       if (buttonEdit == null) {
         break missingId;
       }
 
       id = R.id.buttonPreview;
-      Button buttonPreview = ViewBindings.findChildViewById(rootView, id);
+      AppCompatButton buttonPreview = ViewBindings.findChildViewById(rootView, id);
       if (buttonPreview == null) {
         break missingId;
       }
 
       id = R.id.buttonUpload;
-      Button buttonUpload = ViewBindings.findChildViewById(rootView, id);
+      AppCompatButton buttonUpload = ViewBindings.findChildViewById(rootView, id);
       if (buttonUpload == null) {
         break missingId;
       }

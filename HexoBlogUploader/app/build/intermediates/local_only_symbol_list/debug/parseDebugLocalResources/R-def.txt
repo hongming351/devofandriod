@@ -12,6 +12,11 @@ color teal_700
 color text_primary
 color text_secondary
 color white
+drawable button_blog_action
+drawable button_edit_action
+drawable button_markdown_toolbar
+drawable button_preview_action
+drawable button_upload_action
 id buttonAbout
 id buttonBack
 id buttonCheckStatus
@@ -25,8 +30,10 @@ id buttonDelete
 id buttonEdit
 id buttonFeedback
 id buttonInitStorage
+id buttonInsertBold
 id buttonInsertCode
 id buttonInsertImage
+id buttonInsertItalic
 id buttonInsertLink
 id buttonListPosts
 id buttonPreview

@@ -1,5 +1,6 @@
 package com.example.hexobloguploader.model
 
+import com.example.hexobloguploader.utils.YamlParser
 import java.io.File
 import java.io.Serializable
 import java.text.SimpleDateFormat
@@ -14,12 +15,14 @@ data class Post(
     val id: String,
     val title: String,
     val fileName: String,          // Markdown 文件名，如 "2025-03-25-my-blog-post.md"
-    val content: String,           // Markdown 内容
-    val date: String,              // 发布日期，格式：yyyy-MM-dd
+    val content: String,           // Markdown 内容（包含 Front-matter 和正文）
+    val bodyContent: String,       // 纯正文内容（不包含 Front-matter）
+    val date: String,              // 发布日期，格式：yyyy-MM-dd HH:mm:ss
     val categories: List<String>,  // 分类
     val tags: List<String>,        // 标签
     val filePath: String,          // 完整文件路径
-    val lastModified: Long = System.currentTimeMillis()
+    val lastModified: Long = System.currentTimeMillis(),
+    val frontMatterData: Map<String, Any> = emptyMap()  // 完整的 Front-matter 数据
 ) : Serializable {
     companion object {
         /**
@@ -35,21 +38,36 @@ data class Post(
             val id = file.absolutePath.hashCode().toString()
             
             // 从文件名提取日期（Hexo 标准格式：yyyy-MM-dd-title.md）
-            val date = extractDateFromFileName(fileName)
+            val dateFromFileName = extractDateFromFileName(fileName)
             
-            // 从内容提取标题和元数据
-            val (title, categories, tags) = parseFrontMatter(content)
+            // 使用 YAML 解析器解析 Front-matter
+            val (frontMatter, bodyContent) = YamlParser.parseFrontMatter(content)
+            
+            // 从 Front-matter 提取数据
+            val title = YamlParser.getStringValue(frontMatter, "title", "未命名文章")
+            val categories = YamlParser.getStringList(frontMatter, "categories")
+            val tags = YamlParser.getStringList(frontMatter, "tags")
+            
+            // 获取日期（优先使用 Front-matter 中的日期）
+            val date = if (frontMatter?.containsKey("date") == true) {
+                val dateObj = YamlParser.getDateValue(frontMatter, "date")
+                dateObj?.let { formatDate(it) } ?: dateFromFileName
+            } else {
+                dateFromFileName
+            }
             
             return Post(
                 id = id,
                 title = title,
                 fileName = fileName,
                 content = content,
+                bodyContent = bodyContent,
                 date = date,
                 categories = categories,
                 tags = tags,
                 filePath = file.absolutePath,
-                lastModified = file.lastModified()
+                lastModified = file.lastModified(),
+                frontMatterData = frontMatter ?: emptyMap()
             )
         }
         
@@ -64,106 +82,147 @@ data class Post(
         }
         
         /**
-         * 解析 Front Matter（YAML 格式）
-         * ---
-         * title: 文章标题
-         * date: 2025-03-25
-         * categories: [分类1, 分类2]
-         * tags: [标签1, 标签2]
-         * ---
+         * 格式化日期为 Hexo 标准格式
          */
-        private fun parseFrontMatter(content: String): Triple<String, List<String>, List<String>> {
-            var title = "未命名文章"
-            var categories = emptyList<String>()
-            var tags = emptyList<String>()
-            
-            val frontMatterRegex = """^---\s*\n(.*?)\n---\s*\n""".toRegex(RegexOption.DOT_MATCHES_ALL)
-            val match = frontMatterRegex.find(content)
-            
-            if (match != null) {
-                val frontMatter = match.groupValues[1]
-                
-                // 解析标题
-                val titleRegex = """title:\s*(.+)""".toRegex()
-                val titleMatch = titleRegex.find(frontMatter)
-                title = titleMatch?.groupValues?.get(1)?.trim() ?: title
-                
-                // 解析分类
-                val categoriesRegex = """categories:\s*\[(.*?)\]""".toRegex()
-                val categoriesMatch = categoriesRegex.find(frontMatter)
-                categories = categoriesMatch?.groupValues?.get(1)
-                    ?.split(",")
-                    ?.map { it.trim() }
-                    ?.filter { it.isNotEmpty() }
-                    ?: emptyList()
-                
-                // 解析标签
-                val tagsRegex = """tags:\s*\[(.*?)\]""".toRegex()
-                val tagsMatch = tagsRegex.find(frontMatter)
-                tags = tagsMatch?.groupValues?.get(1)
-                    ?.split(",")
-                    ?.map { it.trim() }
-                    ?.filter { it.isNotEmpty() }
-                    ?: emptyList()
-            } else {
-                // 如果没有 Front Matter，使用第一行作为标题
-                val firstLine = content.lines().firstOrNull { it.isNotEmpty() }
-                if (firstLine != null && firstLine.startsWith("# ")) {
-                    title = firstLine.substring(2).trim()
-                }
-            }
-            
-            return Triple(title, categories, tags)
+        private fun formatDate(date: Date): String {
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+            return sdf.format(date)
         }
         
         /**
-         * 获取当前日期字符串
+         * 获取当前日期字符串（Hexo 标准格式）
          */
         private fun getCurrentDate(): String {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
             return sdf.format(Date())
         }
         
         /**
          * 创建新的 Post 对象
          */
-        fun createNew(title: String, content: String = "", categories: List<String> = emptyList(), tags: List<String> = emptyList()): Post {
+        fun createNew(
+            title: String, 
+            bodyContent: String = "", 
+            categories: List<String> = emptyList(), 
+            tags: List<String> = emptyList(),
+            additionalFrontMatter: Map<String, Any> = emptyMap()
+        ): Post {
             val date = getCurrentDate()
-            val fileName = "${date}-${title.replace(" ", "-").replace("[^a-zA-Z0-9-]".toRegex(), "").lowercase()}.md"
+            val fileName = generateFileName(date, title)
+            
+            // 创建标准的 Front-matter 数据
+            val frontMatterData = YamlParser.createStandardFrontMatter(
+                title = title,
+                date = Date(),
+                categories = categories,
+                tags = tags,
+                additionalData = additionalFrontMatter
+            )
+            
+            // 生成完整的 Markdown 内容
+            val fullContent = YamlParser.generateFrontMatter(frontMatterData) + bodyContent
             
             return Post(
                 id = System.currentTimeMillis().toString(),
                 title = title,
                 fileName = fileName,
-                content = content,
+                content = fullContent,
+                bodyContent = bodyContent,
                 date = date,
                 categories = categories,
                 tags = tags,
                 filePath = "", // 将在保存时设置
-                lastModified = System.currentTimeMillis()
+                lastModified = System.currentTimeMillis(),
+                frontMatterData = frontMatterData
             )
         }
         
         /**
-         * 生成 Hexo 格式的 Front Matter
+         * 生成文件名
+         * 格式：YYYY-MM-DD-文章标题.md
          */
-        fun generateFrontMatter(post: Post): String {
-            return """---
-title: ${post.title}
-date: ${post.date}
-categories: [${post.categories.joinToString(", ")}]
-tags: [${post.tags.joinToString(", ")}]
----
-
-"""
+        private fun generateFileName(date: String, title: String): String {
+            // 从日期字符串中提取日期部分（yyyy-MM-dd）
+            val datePart = date.substring(0, 10)
+            
+            // 清理标题，生成安全的文件名
+            val safeTitle = title
+                .replace(" ", "-")
+                .replace("[^a-zA-Z0-9\\-]".toRegex(), "")
+                .lowercase()
+                .take(50) // 限制长度
+            
+            return "$datePart-$safeTitle.md"
+        }
+        
+        /**
+         * 更新 Post 对象
+         */
+        fun updatePost(
+            post: Post,
+            title: String,
+            bodyContent: String,
+            categories: List<String>,
+            tags: List<String>,
+            additionalUpdates: Map<String, Any> = emptyMap()
+        ): Post {
+            // 合并 Front-matter 数据
+            val updatedFrontMatter = mutableMapOf<String, Any>()
+            
+            // 保留原有的 Front-matter 数据
+            updatedFrontMatter.putAll(post.frontMatterData)
+            
+            // 更新标准字段
+            updatedFrontMatter["title"] = title
+            
+            // 更新日期（如果原来没有 date 字段，添加当前日期）
+            if (!updatedFrontMatter.containsKey("date")) {
+                updatedFrontMatter["date"] = getCurrentDate()
+            }
+            
+            // 更新分类和标签
+            if (categories.isNotEmpty()) {
+                updatedFrontMatter["categories"] = categories
+            } else if (updatedFrontMatter.containsKey("categories")) {
+                updatedFrontMatter.remove("categories")
+            }
+            
+            if (tags.isNotEmpty()) {
+                updatedFrontMatter["tags"] = tags
+            } else if (updatedFrontMatter.containsKey("tags")) {
+                updatedFrontMatter.remove("tags")
+            }
+            
+            // 应用额外更新
+            updatedFrontMatter.putAll(additionalUpdates)
+            
+            // 生成新的文件名（如果需要）
+            val newFileName = if (post.title != title) {
+                generateFileName(post.date, title)
+            } else {
+                post.fileName
+            }
+            
+            // 生成完整的 Markdown 内容
+            val fullContent = YamlParser.generateFrontMatter(updatedFrontMatter) + bodyContent
+            
+            return post.copy(
+                title = title,
+                fileName = newFileName,
+                content = fullContent,
+                bodyContent = bodyContent,
+                categories = categories,
+                tags = tags,
+                lastModified = System.currentTimeMillis(),
+                frontMatterData = updatedFrontMatter
+            )
         }
         
         /**
          * 生成完整的 Markdown 内容
          */
         fun generateMarkdownContent(post: Post): String {
-            val frontMatter = generateFrontMatter(post)
-            return frontMatter + post.content
+            return YamlParser.generateFrontMatter(post.frontMatterData) + post.bodyContent
         }
     }
     
@@ -174,10 +233,11 @@ tags: [${post.tags.joinToString(", ")}]
         return com.example.hexobloguploader.Blog(
             id = id,
             title = title,
-            content = content.take(200), // 预览内容
+            content = bodyContent.take(200), // 预览内容（只显示正文）
             date = date,
             tags = tags,
-            filePath = filePath
+            filePath = filePath,
+            lastModified = lastModified
         )
     }
 }

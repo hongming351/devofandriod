@@ -78,39 +78,71 @@
                 android:textColor="?android:attr/textColorSecondary"
                 android:layout_marginBottom="24dp" />
 
+            <!-- 操作按钮区域 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="文章操作"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="12dp"
+                android:textColor="?android:attr/textColorPrimary" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="24dp"
+                android:gravity="center">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonEdit"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="编辑"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     android:layout_marginEnd="8dp"
-                    style="?android:attr/borderlessButtonStyle" />
+                    android:drawableStart="@android:drawable/ic_menu_edit"
+                    android:drawablePadding="8dp"
+                    android:background="@drawable/button_edit_action"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonPreview"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="预览"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
-                    style="?android:attr/borderlessButtonStyle" />
+                    android:drawableStart="@android:drawable/ic_menu_view"
+                    android:drawablePadding="8dp"
+                    android:background="@drawable/button_preview_action"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/buttonUpload"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_weight="1"
                     android:text="上传"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
                     android:layout_marginStart="8dp"
-                    style="?android:attr/borderlessButtonStyle" />
+                    android:drawableStart="@android:drawable/ic_menu_upload"
+                    android:drawablePadding="8dp"
+                    android:background="@drawable/button_upload_action"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
 
             </LinearLayout>
 

@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
         // 暂时创建一个示例博客并保存
         val newPost = com.example.hexobloguploader.model.Post.createNew(
             title = "新博客文章",
-            content = "# 新博客文章\n\n这是你的新博客文章，开始编辑吧！",
+            bodyContent = "# 新博客文章\n\n这是你的新博客文章，开始编辑吧！",
             categories = listOf("未分类"),
             tags = listOf("新文章")
         )
@@ -245,5 +245,6 @@ data class Blog(
     val content: String,
     val date: String,
     val tags: List<String>,
-    val filePath: String
+    val filePath: String,
+    val lastModified: Long = System.currentTimeMillis()
 )

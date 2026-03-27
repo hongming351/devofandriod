@@ -4,6 +4,11 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import com.example.hexobloguploader.databinding.ActivityBlogDetailBinding
+import io.noties.markwon.Markwon
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 
 class BlogDetailActivity : AppCompatActivity() {
@@ -122,6 +127,7 @@ class BlogDetailActivity : AppCompatActivity() {
                 title = title,
                 fileName = fileName,
                 content = content,
+                bodyContent = content, // 使用相同的内容作为正文
                 date = date,
                 categories = listOf("未分类"), // 暂时使用默认分类
                 tags = tags,
@@ -144,12 +150,393 @@ class BlogDetailActivity : AppCompatActivity() {
     }
     
     private fun showPreview() {
-        // 后续将实现预览功能
-        android.widget.Toast.makeText(
-            this,
-            "打开预览",
-            android.widget.Toast.LENGTH_SHORT
-        ).show()
+        // 从 Intent 获取博客数据
+        val bundle = intent.getBundleExtra("BLOG_DATA")
+        
+        if (bundle != null) {
+            val content = bundle.getString("content", "")
+            
+            // 显示加载对话框
+            val loadingDialog = android.app.AlertDialog.Builder(this)
+                .setTitle("Markdown 预览")
+                .setMessage("正在渲染 Markdown...")
+                .setCancelable(false)
+                .create()
+            
+            loadingDialog.show()
+            
+            // 在后台线程处理 Markdown 渲染
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    // 初始化 Markwon
+                    val markwon = Markwon.create(this@BlogDetailActivity)
+                    
+                    // 渲染 Markdown 为 HTML
+                    // 使用 Markwon 的 render 方法，然后转换为 HTML
+                    val spanned = markwon.toMarkdown(content)
+                    val htmlContent = android.text.Html.toHtml(spanned)
+                    
+                    // 创建完整的 HTML 文档
+                    val fullHtml = """
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <meta charset="UTF-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                            <style>
+                                body {
+                                    font-family: 'Roboto', sans-serif;
+                                    line-height: 1.6;
+                                    color: #333;
+                                    padding: 20px;
+                                    max-width: 800px;
+                                    margin: 0 auto;
+                                }
+                                h1, h2, h3 {
+                                    color: #2c3e50;
+                                    margin-top: 1.5em;
+                                    margin-bottom: 0.5em;
+                                }
+                                h1 { font-size: 2em; }
+                                h2 { font-size: 1.5em; }
+                                h3 { font-size: 1.2em; }
+                                p {
+                                    margin-bottom: 1em;
+                                }
+                                code {
+                                    background-color: #f5f5f5;
+                                    padding: 2px 4px;
+                                    border-radius: 3px;
+                                    font-family: 'Courier New', monospace;
+                                }
+                                pre {
+                                    background-color: #f5f5f5;
+                                    padding: 10px;
+                                    border-radius: 5px;
+                                    overflow-x: auto;
+                                }
+                                pre code {
+                                    background-color: transparent;
+                                    padding: 0;
+                                }
+                                a {
+                                    color: #3498db;
+                                    text-decoration: none;
+                                }
+                                a:hover {
+                                    text-decoration: underline;
+                                }
+                                img {
+                                    max-width: 100%;
+                                    height: auto;
+                                }
+                                ul, ol {
+                                    padding-left: 20px;
+                                    margin-bottom: 1em;
+                                }
+                                li {
+                                    margin-bottom: 0.5em;
+                                }
+                                blockquote {
+                                    border-left: 4px solid #3498db;
+                                    padding-left: 15px;
+                                    margin-left: 0;
+                                    color: #666;
+                                    font-style: italic;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            $htmlContent
+                        </body>
+                        </html>
+                    """.trimIndent()
+                    
+                    // 切换到主线程显示结果
+                    withContext(Dispatchers.Main) {
+                        loadingDialog.dismiss()
+                        
+                        // 创建预览对话框
+                        val dialog = android.app.AlertDialog.Builder(this@BlogDetailActivity)
+                            .setTitle("Markdown 预览")
+                            .setPositiveButton("关闭", null)
+                            .create()
+                        
+                        // 创建 WebView 用于显示渲染后的 Markdown
+                        val webView = android.webkit.WebView(this@BlogDetailActivity)
+                        webView.settings.javaScriptEnabled = true
+                        
+                        // 添加加载监听器
+                        webView.webViewClient = object : android.webkit.WebViewClient() {
+                            override fun onPageFinished(view: android.webkit.WebView?, url: String?) {
+                                super.onPageFinished(view, url)
+                                // 页面加载完成后的逻辑
+                            }
+                        }
+                        
+                        // 加载 HTML 内容
+                        webView.loadDataWithBaseURL(
+                            null,
+                            fullHtml,
+                            "text/html",
+                            "UTF-8",
+                            null
+                        )
+                        
+                        // 设置对话框视图为WebView
+                        dialog.setView(webView)
+                        dialog.show()
+                        
+                        // 设置对话框大小
+                        val window = dialog.window
+                        if (window != null) {
+                            val layoutParams = android.view.WindowManager.LayoutParams()
+                            layoutParams.copyFrom(window.attributes)
+                            layoutParams.width = android.view.WindowManager.LayoutParams.MATCH_PARENT
+                            layoutParams.height = android.view.WindowManager.LayoutParams.MATCH_PARENT
+                            window.attributes = layoutParams
+                        }
+                    }
+                } catch (e: Exception) {
+                    // 处理异常
+                    withContext(Dispatchers.Main) {
+                        loadingDialog.dismiss()
+                        android.widget.Toast.makeText(
+                            this@BlogDetailActivity,
+                            "渲染失败: ${e.message}",
+                            android.widget.Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        } else {
+            android.widget.Toast.makeText(
+                this,
+                "无法获取博客内容",
+                android.widget.Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+    
+    /**
+     * 将 Markdown 转换为 HTML
+     * 优化版本：使用更高效的正则表达式，避免性能问题
+     */
+    private fun convertMarkdownToHtml(markdown: String): String {
+        // 对于大型文档，使用更高效的处理方式
+        // 限制处理长度，避免性能问题
+        val processedMarkdown = if (markdown.length > 10000) {
+            markdown.substring(0, 10000) + "\n\n...（内容过长，已截断）"
+        } else {
+            markdown
+        }
+        
+        // 使用 StringBuilder 提高性能
+        val htmlBuilder = StringBuilder()
+        
+        // 添加 HTML 头部和样式
+        htmlBuilder.append("""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <style>
+                    body {
+                        font-family: 'Roboto', sans-serif;
+                        line-height: 1.6;
+                        color: #333;
+                        padding: 20px;
+                        max-width: 800px;
+                        margin: 0 auto;
+                    }
+                    h1, h2, h3 {
+                        color: #2c3e50;
+                        margin-top: 1.5em;
+                        margin-bottom: 0.5em;
+                    }
+                    h1 { font-size: 2em; }
+                    h2 { font-size: 1.5em; }
+                    h3 { font-size: 1.2em; }
+                    p {
+                        margin-bottom: 1em;
+                    }
+                    code {
+                        background-color: #f5f5f5;
+                        padding: 2px 4px;
+                        border-radius: 3px;
+                        font-family: 'Courier New', monospace;
+                    }
+                    pre {
+                        background-color: #f5f5f5;
+                        padding: 10px;
+                        border-radius: 5px;
+                        overflow-x: auto;
+                    }
+                    pre code {
+                        background-color: transparent;
+                        padding: 0;
+                    }
+                    a {
+                        color: #3498db;
+                        text-decoration: none;
+                    }
+                    a:hover {
+                        text-decoration: underline;
+                    }
+                    img {
+                        max-width: 100%;
+                        height: auto;
+                    }
+                    ul, ol {
+                        padding-left: 20px;
+                        margin-bottom: 1em;
+                    }
+                    li {
+                        margin-bottom: 0.5em;
+                    }
+                    blockquote {
+                        border-left: 4px solid #3498db;
+                        padding-left: 15px;
+                        margin-left: 0;
+                        color: #666;
+                        font-style: italic;
+                    }
+                </style>
+            </head>
+            <body>
+        """.trimIndent())
+        
+        // 简单的 Markdown 转换（优化性能）
+        val lines = processedMarkdown.lines()
+        var inCodeBlock = false
+        var inParagraph = false
+        
+        for (line in lines) {
+            val trimmedLine = line.trim()
+            
+            if (trimmedLine.startsWith("```")) {
+                // 代码块开始/结束
+                inCodeBlock = !inCodeBlock
+                if (inCodeBlock) {
+                    htmlBuilder.append("<pre><code>")
+                } else {
+                    htmlBuilder.append("</code></pre>")
+                }
+                continue
+            }
+            
+            if (inCodeBlock) {
+                // 在代码块中，直接添加行
+                htmlBuilder.append(escapeHtml(line)).append("\n")
+                continue
+            }
+            
+            if (trimmedLine.isEmpty()) {
+                // 空行结束段落
+                if (inParagraph) {
+                    htmlBuilder.append("</p>")
+                    inParagraph = false
+                }
+                continue
+            }
+            
+            // 处理标题
+            when {
+                trimmedLine.startsWith("# ") -> {
+                    if (inParagraph) {
+                        htmlBuilder.append("</p>")
+                        inParagraph = false
+                    }
+                    htmlBuilder.append("<h1>").append(escapeHtml(trimmedLine.substring(2))).append("</h1>")
+                }
+                trimmedLine.startsWith("## ") -> {
+                    if (inParagraph) {
+                        htmlBuilder.append("</p>")
+                        inParagraph = false
+                    }
+                    htmlBuilder.append("<h2>").append(escapeHtml(trimmedLine.substring(3))).append("</h2>")
+                }
+                trimmedLine.startsWith("### ") -> {
+                    if (inParagraph) {
+                        htmlBuilder.append("</p>")
+                        inParagraph = false
+                    }
+                    htmlBuilder.append("<h3>").append(escapeHtml(trimmedLine.substring(4))).append("</h3>")
+                }
+                trimmedLine.startsWith("* ") || trimmedLine.startsWith("- ") -> {
+                    if (!inParagraph) {
+                        htmlBuilder.append("<ul>")
+                    }
+                    htmlBuilder.append("<li>").append(processInlineMarkdown(trimmedLine.substring(2))).append("</li>")
+                    inParagraph = false
+                }
+                else -> {
+                    // 普通段落
+                    if (!inParagraph) {
+                        htmlBuilder.append("<p>")
+                        inParagraph = true
+                    } else {
+                        htmlBuilder.append("<br>")
+                    }
+                    htmlBuilder.append(processInlineMarkdown(trimmedLine))
+                }
+            }
+        }
+        
+        // 关闭最后一个段落
+        if (inParagraph) {
+            htmlBuilder.append("</p>")
+        }
+        
+        // 关闭列表（如果有）
+        htmlBuilder.append("</ul>")
+        
+        // 添加 HTML 尾部
+        htmlBuilder.append("""
+            </body>
+            </html>
+        """.trimIndent())
+        
+        return htmlBuilder.toString()
+    }
+    
+    /**
+     * 处理行内 Markdown 格式
+     */
+    private fun processInlineMarkdown(text: String): String {
+        var result = text
+        
+        // 粗体：**text** 或 __text__
+        result = result.replace("\\*\\*(.*?)\\*\\*".toRegex(), "<strong>$1</strong>")
+        result = result.replace("__(.*?)__".toRegex(), "<strong>$1</strong>")
+        
+        // 斜体：*text* 或 _text_
+        result = result.replace("\\*(.*?)\\*".toRegex(), "<em>$1</em>")
+        result = result.replace("_(.*?)_".toRegex(), "<em>$1</em>")
+        
+        // 行内代码：`code`
+        result = result.replace("`(.*?)`".toRegex(), "<code>$1</code>")
+        
+        // 链接：[text](url)
+        result = result.replace("\\[(.*?)\\]\\((.*?)\\)".toRegex(), "<a href=\"$2\">$1</a>")
+        
+        // 图片：![alt](url)
+        result = result.replace("!\\[(.*?)\\]\\((.*?)\\)".toRegex(), "<img src=\"$2\" alt=\"$1\">")
+        
+        return escapeHtml(result)
+    }
+    
+    /**
+     * 转义 HTML 特殊字符
+     */
+    private fun escapeHtml(text: String): String {
+        return text
+            .replace("&", "&")
+            .replace("<", "<")
+            .replace(">", ">")
+            .replace("\"", """)
+            .replace("'", "&#39;")
     }
     
     private fun uploadBlog() {
@@ -193,6 +580,7 @@ class BlogDetailActivity : AppCompatActivity() {
                         title = title,
                         fileName = File(filePath).name,
                         content = "",
+                        bodyContent = "", // 添加空的正文内容
                         date = "",
                         categories = emptyList(),
                         tags = emptyList(),

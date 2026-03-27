@@ -3054,6 +3054,11 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
+drawable button_blog_action
+drawable button_edit_action
+drawable button_markdown_toolbar
+drawable button_preview_action
+drawable button_upload_action
 drawable design_fab_background
 drawable design_ic_visibility
 drawable design_ic_visibility_off
@@ -3264,8 +3269,10 @@ id buttonDelete
 id buttonEdit
 id buttonFeedback
 id buttonInitStorage
+id buttonInsertBold
 id buttonInsertCode
 id buttonInsertImage
+id buttonInsertItalic
 id buttonInsertLink
 id buttonListPosts
 id buttonPanel

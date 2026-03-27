@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.hexobloguploader.databinding.ActivitySettingsBinding
+import com.example.hexobloguploader.git.GitSettingsManager
 
 /**
  * 设置界面
@@ -11,6 +12,18 @@ import com.example.hexobloguploader.databinding.ActivitySettingsBinding
  */
 class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
+    private val sharedPreferences by lazy {
+        getSharedPreferences("hexo_blog_settings", android.content.Context.MODE_PRIVATE)
+    }
+    
+    companion object {
+        private const val KEY_GITHUB_USERNAME = "github_username"
+        private const val KEY_GITHUB_TOKEN = "github_token"
+        private const val KEY_REPO_URL = "repo_url"
+        private const val KEY_BLOG_TITLE = "blog_title"
+        private const val KEY_AUTHOR_NAME = "author_name"
+        private const val KEY_STORAGE_PATH = "storage_path"
+    }
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,8 +65,27 @@ class SettingsActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             
-            // 保存设置（这里应该保存到SharedPreferences）
-            Toast.makeText(this, "GitHub设置已保存", Toast.LENGTH_SHORT).show()
+            // 使用 GitSettingsManager 保存设置
+            val gitSettingsManager = GitSettingsManager(this)
+            gitSettingsManager.setGitHubUsername(username)
+            gitSettingsManager.setGitHubToken(token)
+            gitSettingsManager.setRepoUrl(repoUrl)
+            
+            // 同时保存到旧的 SharedPreferences（兼容性）
+            with(sharedPreferences.edit()) {
+                putString(KEY_GITHUB_USERNAME, username)
+                putString(KEY_GITHUB_TOKEN, token)
+                putString(KEY_REPO_URL, repoUrl)
+                apply()
+            }
+            
+            // 显示 Git 设置状态
+            val status = gitSettingsManager.getGitSetupStatus()
+            if (status.isComplete) {
+                Toast.makeText(this, "GitHub设置已保存，设置完整", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "GitHub设置已保存，但设置不完整: ${status.missingFields.joinToString()}", Toast.LENGTH_LONG).show()
+            }
         }
         
         // 博客设置
@@ -72,6 +104,12 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             // 保存设置
+            with(sharedPreferences.edit()) {
+                putString(KEY_BLOG_TITLE, title)
+                putString(KEY_AUTHOR_NAME, author)
+                apply()
+            }
+            
             Toast.makeText(this, "博客设置已保存", Toast.LENGTH_SHORT).show()
         }
         
@@ -85,6 +123,11 @@ class SettingsActivity : AppCompatActivity() {
             }
             
             // 保存设置
+            with(sharedPreferences.edit()) {
+                putString(KEY_STORAGE_PATH, path)
+                apply()
+            }
+            
             Toast.makeText(this, "存储设置已保存", Toast.LENGTH_SHORT).show()
         }
         
@@ -101,18 +144,39 @@ class SettingsActivity : AppCompatActivity() {
             showAboutDialog()
         }
         
-        // 加载现有设置（这里应该从SharedPreferences加载）
+        // 加载现有设置
         loadExistingSettings()
     }
     
     private fun loadExistingSettings() {
-        // 这里应该从SharedPreferences加载现有设置
-        // 暂时设置一些默认值
-        binding.editGithubUsername.setText("your-username")
-        binding.editRepoUrl.setText("https://github.com/your-username/your-hexo-blog.git")
-        binding.editBlogTitle.setText("我的 Hexo 博客")
-        binding.editAuthorName.setText("Hexo 博客作者")
-        binding.editStoragePath.setText("/storage/emulated/0/HexoBlog")
+        // 使用 GitSettingsManager 加载 Git 设置
+        val gitSettingsManager = GitSettingsManager(this)
+        
+        // 优先从 GitSettingsManager 加载，如果为空则从旧的 SharedPreferences 加载
+        val username = gitSettingsManager.getGitHubUsername().ifEmpty {
+            sharedPreferences.getString(KEY_GITHUB_USERNAME, "your-username") ?: "your-username"
+        }
+        val token = gitSettingsManager.getGitHubToken().ifEmpty {
+            sharedPreferences.getString(KEY_GITHUB_TOKEN, "") ?: ""
+        }
+        val repoUrl = gitSettingsManager.getRepoUrl().ifEmpty {
+            sharedPreferences.getString(KEY_REPO_URL, "https://github.com/your-username/your-hexo-blog.git") ?: "https://github.com/your-username/your-hexo-blog.git"
+        }
+        
+        binding.editGithubUsername.setText(username)
+        binding.editGithubToken.setText(token)
+        binding.editRepoUrl.setText(repoUrl)
+        
+        // 加载其他设置
+        binding.editBlogTitle.setText(sharedPreferences.getString(KEY_BLOG_TITLE, "我的 Hexo 博客"))
+        binding.editAuthorName.setText(sharedPreferences.getString(KEY_AUTHOR_NAME, "Hexo 博客作者"))
+        binding.editStoragePath.setText(sharedPreferences.getString(KEY_STORAGE_PATH, "/storage/emulated/0/HexoBlog"))
+        
+        // 显示 Git 设置状态
+        val status = gitSettingsManager.getGitSetupStatus()
+        if (!status.isComplete) {
+            Toast.makeText(this, "Git 设置不完整，请完善设置", Toast.LENGTH_LONG).show()
+        }
     }
     
     private fun showAboutDialog() {
